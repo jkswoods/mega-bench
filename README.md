@@ -20,6 +20,10 @@ One placeable workshop gives you a native crafting library for compatible Hytale
 
 The current Alpha UI screenshots use native item icons. Placed-bench photos and the unlock/upgrade walkthrough retain the unchanged model and panel layout from 0.1.0-spike5r1.
 
+## Other mod workbenches
+
+The **0.1.0-alpha.2 test build** discovers ordinary native crafting benches from any enabled pack, without mod-specific optional dependencies. It preserves original recipes and tier data; benches without a suitable craft recipe offer an explicit hand-in of one physical bench. Server exclusions and identity overrides are documented in [Other workbench support](docs/bench-support.md). Special processing and custom plugin stations still need dedicated adapters. Alpha2 has not been uploaded to CurseForge.
+
 ## Build from source
 
 Use JDK 25 and the pinned official Hytale server listed in `config/target.json`. The build reads that separately installed server to compile; it does not package the server, game artwork or compatibility artwork. UI icons and native Common.ui styles are resolved from the player's installed game/mods at runtime.
@@ -32,7 +36,7 @@ python3 tools/build.py \
 
 `MB_JAVA_HOME` and `MB_SERVER_JAR` may supply those paths; `JAVA_HOME` is a fallback for the JDK. Optional Emberworks and Foundry Floor are installed separately at runtime and are not required for building the mod.
 
-The build compiles the plugin, runs the progress tests and writes `build/libs/MegaBench-0.1.0-alpha.1.jar`. With the pinned inputs its SHA256 is `dff77ac3f030d58f8c440ab34682fd54f16796e30a8f0807c04fd5ea7970bdf0`. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
+The build compiles the plugin, runs the progress and compatibility tests and writes `build/libs/MegaBench-0.1.0-alpha.2.jar`. With the pinned inputs its SHA256 is `0cbff299e64f957f71c87b3c61a28fabab3f80132aaf5bf0c87a10a6c76ae14b`. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
 
 ## Build the guide
 

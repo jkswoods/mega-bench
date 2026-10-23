@@ -4,7 +4,11 @@
 
 **Mega Bench 0.1.0-alpha.1** targets **Hytale 0.7.4 / Java 25**. Use the exact matching Alpha build and a backed-up test world. Other Hytale versions are not verified.
 
-## Initial adapters
+## Other workbenches
+
+The **0.1.0-alpha.2 test build** adds [automatic discovery and server compatibility settings](bench-support.md) for ordinary native crafting benches from any enabled pack. It has not been uploaded to CurseForge. The Alpha1 download remains the version described below.
+
+## Alpha1 adapters
 
 | Source | What is supported |
 | --- | --- |

@@ -47,12 +47,12 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
         c.clear("#Sources");c.clear("#Categories");c.clear("#Grid");
         c.append("#Sources","Pages/MegaBench/Source.ui");c.set("#Sources[0] #Name.Text","All workbenches");c.set("#Sources[0] #State.Text","Browse your unlocked recipes");c.set("#Sources[0] #Icon.ItemId","MB_MegaBench");c.set("#Sources[0] #Selected.Visible",source.equals("*"));bind(e,"#Sources[0]","source:*");row++;
         String lastGroup="";
-        var sorted=catalogue.sources.values().stream().sorted(Comparator.comparing((Catalogue.Source x)->!x.supported()).thenComparingInt(x->x.group().equals("Hytale")?0:x.group().equals("Emberworks")?1:x.group().equals("Foundry Floor")?2:3).thenComparing(Catalogue.Source::id)).toList();
+        var sorted=catalogue.sources.values().stream().sorted(Comparator.comparing((Catalogue.Source x)->!x.supported()).thenComparingInt(x->x.group().equals("Hytale")?0:1).thenComparing(Catalogue.Source::group).thenComparing(Catalogue.Source::id)).toList();
         for(var entry:sorted){
-            String group=entry.supported()?entry.group():"Requires an adapter";
+            String group=entry.supported()?entry.group():"Unavailable benches";
             if(!group.equals(lastGroup)){String heading="#Sources["+(row++)+"]";c.append("#Sources","Pages/MegaBench/Group.ui");c.set(heading+".Text",group);lastGroup=group;}
             String sel="#Sources["+(row++)+"]";c.append("#Sources","Pages/MegaBench/Source.ui");sourceRows.put(entry.id(),sel);
-            c.set(sel+" #Name.Text",NativePresentation.text(entry.item(),playerRef.getLanguage()));c.set(sel+" #Icon.ItemId",entry.item());c.set(sel+" #Selected.Visible",entry.id().equals(source));bind(e,sel,"source:"+entry.id());
+            c.set(sel+" #Name.Text",NativePresentation.text(entry.item(),playerRef.getLanguage()));c.set(sel+" #Icon.ItemId",entry.item());c.set(sel+".TooltipText",entry.id()+(entry.supported()?"":"\n"+entry.reason()));c.set(sel+" #Selected.Visible",entry.id().equals(source));bind(e,sel,"source:"+entry.id());
         }
         for(String f:List.of("Craftable","Unlocked","All")){bind(e,"#"+f,"filter:"+f);c.set("#"+f+".Style",Value.ref("Common.ui",f.equals(filter)?"SmallTertiaryTextButtonStyle":"SmallSecondaryTextButtonStyle"));}
         e.addEventBinding(CustomUIEventBindingType.Activating,"#SearchGo",EventData.of("Action","search").append("Version",Long.toString(version)).append("@Search","#Search.Value"),false);
@@ -91,8 +91,8 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
         offset=Math.min(Math.max(0,offset),Math.max(0,(entries.size()-1)/PAGE_SIZE*PAGE_SIZE));visible=List.copyOf(entries.subList(offset,Math.min(offset+PAGE_SIZE,entries.size())));
         if(selected==null&&!visible.isEmpty())selected=visible.getFirst();
         for(int i=0;i<visible.size();i++){
-            if(i%COLUMNS==0)c.append("#Grid","Pages/MegaBench/Row.ui");String parent="#Grid["+(i/COLUMNS)+"]",sel=parent+"["+(i%COLUMNS)+"]";var entry=visible.get(i);c.append(parent,"Pages/MegaBench/Tile.ui");var out=entry.recipe().getPrimaryOutput();
-            if(out!=null&&out.getItemId()!=null)c.set(sel+" #Icon.ItemId",out.getItemId());
+            if(i%COLUMNS==0)c.append("#Grid","Pages/MegaBench/Row.ui");String parent="#Grid["+(i/COLUMNS)+"]",sel=parent+"["+(i%COLUMNS)+"]";var entry=visible.get(i);c.append(parent,"Pages/MegaBench/Tile.ui");var outputs=CraftingManager.getOutputItemStacks(entry.recipe());var out=outputs.stream().filter(item->item.getItemId().equals(Catalogue.output(entry.recipe()))).findFirst().orElse(null);
+            if(out!=null)c.set(sel+" #Icon.ItemId",out.getItemId());
             c.set(sel+".TooltipText",NativePresentation.text(Catalogue.output(entry.recipe()),playerRef.getLanguage())+" · "+NativePresentation.label(entry.source().id())+"\n"+entry.recipe().getId());c.set(sel+" #Selected.Visible",selected!=null&&selected.equals(entry));c.set(sel+" #Amount.Text",out!=null&&out.getQuantity()>1?Integer.toString(out.getQuantity()):"");bind(e,sel,"entry:"+i);
         }
         c.set("#Count.Text",entries.isEmpty()?"No recipes":entries.size()+" recipes · "+(offset/PAGE_SIZE+1)+" / "+((entries.size()+PAGE_SIZE-1)/PAGE_SIZE));live(r,s,c);
@@ -105,11 +105,11 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
     void benchControls(Ref<EntityStore>r,Store<EntityStore>s,UICommandBuilder c){
         var progress=MegaBenchPlugin.progress(s);var inv=NativeBridge.inventory(s,r);var src=source.equals("*")?null:catalogue.source(source);c.set("#BenchControls.Visible",src!=null);if(src==null)return;
         int tier=progress.tier(playerRef.getUuid(),src.id());var pending=progress.player(playerRef.getUuid()).pending;
-        c.set("#BenchTitle.Text",NativePresentation.text(src.item(),playerRef.getLanguage()));c.set("#BenchIcon.ItemId",src.item());c.set("#BenchState.Text",!src.supported()?"Adapter required":pending!=null&&pending.bench.equals(src.id())?(pending.tier>1?"Upgrading…":"Unlocking…"):tier==0?"Locked":"Tier "+tier+" · Unlocked");
+        c.set("#BenchTitle.Text",NativePresentation.text(src.item(),playerRef.getLanguage()));c.set("#BenchIcon.ItemId",src.item());c.set("#BenchState.Text",!src.supported()?"Unavailable":pending!=null&&pending.bench.equals(src.id())?(pending.tier>1?"Upgrading…":"Unlocking…"):tier==0?"Locked":"Tier "+tier+" · Unlocked");
         c.set("#BenchUnlock.Style",Value.ref("Common.ui",benchMode.equals("Unlock")?"SmallTertiaryTextButtonStyle":"SmallSecondaryTextButtonStyle"));c.set("#BenchUpgrade.Style",Value.ref("Common.ui",benchMode.equals("Upgrade")?"SmallTertiaryTextButtonStyle":"SmallSecondaryTextButtonStyle"));
         List<MaterialQuantity> costs=List.of();String availability="",action="Unlock workbench",time="";boolean enabled=false;var options=src.supported()?src.unlocks():List.<CraftingRecipe>of();benchChoice=Math.max(0,Math.min(benchChoice,options.size()-1));
         c.set("#BenchOptions.Visible",benchMode.equals("Unlock")&&tier==0&&options.size()>1);c.set("#BenchOption.Text","Source recipe "+(benchChoice+1)+" / "+options.size());
-        if(!src.supported())availability="Use the source station";
+        if(!src.supported())availability=src.reason();
         else if(benchMode.equals("Upgrade")){
             var upgrade=tier<1||tier>=PrivateBenchContext.CAPACITY?null:src.block().getBench().getUpgradeRequirement(tier);
             if(tier==0){availability="Unlock this workbench first";action="Unlock required";}
@@ -119,7 +119,11 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
                 try{if(pending!=null)throw new IllegalArgumentException("Wait for the paid unlock or upgrade");if(!bridge.idle())throw new IllegalArgumentException("Finish the current craft first");if(!inv.canRemoveMaterials(costs))throw new IllegalArgumentException("Missing ingredients");enabled=true;availability="Pay ingredients to upgrade";}catch(IllegalArgumentException ex){availability=ex.getMessage();}
             }
         }else if(tier>0){availability="Ready to craft";action="Unlocked";}
-        else if(options.isEmpty())availability="No supported unlock recipe";
+        else if(src.handIn()){
+            costs=handInCost(src);time="Consumes one physical bench";action="Hand in bench to unlock";
+            try{if(pending!=null)throw new IllegalArgumentException("Wait for the paid unlock or upgrade");if(!bridge.idle())throw new IllegalArgumentException("Finish the current craft first");if(!inv.canRemoveMaterials(costs))throw new IllegalArgumentException("Bring one original bench");enabled=true;availability="No craft recipe: hand in the original bench";}catch(IllegalArgumentException ex){availability=ex.getMessage();}
+        }
+        else if(options.isEmpty())availability="No supported unlock recipe; hand-in disabled";
         else{
             var recipe=options.get(benchChoice);costs=CraftingManager.getInputMaterials(recipe);time=recipe.getTimeSeconds()==0?"Instant unlock":recipe.getTimeSeconds()+"s unlock";
             try{if(pending!=null)throw new IllegalArgumentException("Unlocking…");if(!bridge.idle())throw new IllegalArgumentException("Finish the current craft first");unlockPrerequisites(r,s,recipe);if(!inv.canRemoveMaterials(costs))throw new IllegalArgumentException("Missing ingredients");enabled=true;availability="Pay ingredients to unlock";}catch(IllegalArgumentException ex){availability=ex.getMessage();}
@@ -130,7 +134,7 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
     }
     void live(Ref<EntityStore>r,Store<EntityStore>s,UICommandBuilder c){
         NativePresentation.inventory(c,s,r);var progress=MegaBenchPlugin.progress(s);var inv=NativeBridge.inventory(s,r);
-        for(var row:sourceRows.entrySet()){var bench=catalogue.source(row.getKey());var pending=progress.player(playerRef.getUuid()).pending;int paid=progress.tier(playerRef.getUuid(),bench.id());c.set(row.getValue()+" #State.Text",!bench.supported()?"Adapter required":pending!=null&&pending.bench.equals(bench.id())?(pending.tier>1?"Upgrading…":"Unlocking…"):paid==0?"Locked":"Unlocked · Tier "+paid);}
+        for(var row:sourceRows.entrySet()){var bench=catalogue.source(row.getKey());var pending=progress.player(playerRef.getUuid()).pending;int paid=progress.tier(playerRef.getUuid(),bench.id());c.set(row.getValue()+" #State.Text",!bench.supported()?"Unavailable · see details":pending!=null&&pending.bench.equals(bench.id())?(pending.tier>1?"Upgrading…":"Unlocking…"):paid==0?"Locked":"Unlocked · Tier "+paid);}
         benchControls(r,s,c);c.set("#Selection.Text",selected==null?"Recipe":NativePresentation.text(Catalogue.output(selected.recipe()),playerRef.getLanguage()));c.set("#OutputIcon.Visible",selected!=null);c.set("#OutputCount.Text","");c.set("#Time.Text","");
         List<MaterialQuantity> costs=List.of();String detail="Choose a workbench on the left, then select a recipe.",availability="";boolean enabled=false;
         if(selected!=null){
@@ -143,6 +147,7 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
     }
     String outputs(CraftingRecipe recipe){var text=new StringJoiner("\n");for(var item:CraftingManager.getOutputItemStacks(recipe,quantity))text.add(item.getQuantity()+" × "+NativePresentation.text(item.getItemId(),playerRef.getLanguage()));return text.toString();}
     static String requirements(CraftingRecipe recipe){var text=new StringJoiner("\nOR ");if(recipe.getBenchRequirement()!=null)for(var req:recipe.getBenchRequirement())text.add(NativePresentation.label(req.id)+" · tier "+Math.max(1,req.requiredTierLevel)+(req.requiredAugmentTags!=null&&req.requiredAugmentTags.length>0?" · augments "+String.join(", ",req.requiredAugmentTags):""));return text.toString();}
+    static List<MaterialQuantity> handInCost(Catalogue.Source source){return List.of(new MaterialQuantity(source.item(),null,null,1,null));}
     void unlockPrerequisites(Ref<EntityStore>r,Store<EntityStore>s,CraftingRecipe recipe){
         NativeBridge.knowledge(s,r,recipe);boolean valid=false;
         if(recipe.getBenchRequirement()!=null)for(var req:recipe.getBenchRequirement()){
@@ -166,8 +171,13 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
             inputs=Arrays.asList(upgrade.getInput());seconds=upgrade.getTimeSeconds();target=tier+1;receipt="NativeUpgrade:"+src.id()+":"+target;
         }else{
             if(!benchMode.equals("Unlock")||tier!=0)throw new IllegalArgumentException("Workbench already unlocked");
-            var options=src.unlocks();if(benchChoice<0||benchChoice>=options.size())throw new IllegalArgumentException("Choose an unlock recipe");
-            var recipe=options.get(benchChoice);unlockPrerequisites(r,s,recipe);inputs=CraftingManager.getInputMaterials(recipe);seconds=recipe.getTimeSeconds();target=1;receipt=recipe.getId();
+            var options=src.unlocks();
+            if(src.handIn()){
+                inputs=handInCost(src);seconds=0;target=1;receipt="BenchHandIn:"+src.item();
+            }else{
+                if(benchChoice<0||benchChoice>=options.size())throw new IllegalArgumentException("Choose an unlock recipe");
+                var recipe=options.get(benchChoice);unlockPrerequisites(r,s,recipe);inputs=CraftingManager.getInputMaterials(recipe);seconds=recipe.getTimeSeconds();target=1;receipt=recipe.getId();
+            }
         }
         var inv=NativeBridge.inventory(s,r);if(!inv.canRemoveMaterials(inputs))throw new IllegalArgumentException("Missing ingredients; nothing changed");
         if(!inv.removeMaterials(inputs,true,true,true).succeeded())throw new IllegalArgumentException("Native material transaction refused; nothing changed");

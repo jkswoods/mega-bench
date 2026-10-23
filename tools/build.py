@@ -46,8 +46,9 @@ def main():
     tests = sorted((ROOT / 'src/test/java').rglob('*.java'))
     subprocess.run([javac, '--release', '25', '-cp', classpath, '-d', str(test_classes),
                     *map(str, tests)], check=True)
-    subprocess.run([java, '-ea', '-cp', os.pathsep.join([str(test_classes), classpath]),
-                    'dev.megabench.BridgeStateTest'], check=True)
+    for test in ['BridgeStateTest', 'CompatibilityTest']:
+        subprocess.run([java, '-ea', '-cp', os.pathsep.join([str(test_classes), classpath]),
+                        'dev.megabench.' + test], check=True)
 
     entries = {}
     for folder in [classes, ROOT / 'src/main/resources']:

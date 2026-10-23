@@ -1,5 +1,16 @@
 # Development status
 
+## 0.1.0-alpha.2 — test build
+
+- Discovers ordinary native crafting benches from any enabled pack, without name-prefix filters or optional mod dependencies.
+- Reads the owning pack for source grouping and rescans when opening the library.
+- Preserves original recipes, category IDs, unlock ingredients and tier upgrades.
+- Adds an explicit one-bench hand-in when no suitable original unlock recipe exists.
+- Adds strict server compatibility settings for exclusions, selected bench items and original unlock recipes.
+- Displays recipes that use an output list without a primary output.
+
+See [Other workbench support](bench-support.md). This test build has not been uploaded to CurseForge. Native checks passed for unfamiliar bench discovery, original paid unlocks, tier locks/upgrades, one-physical-bench hand-in, original queue outputs and normal reload. Player review and actual second-client checks remain open.
+
 ## 0.1.0-alpha.1 — experimental Alpha
 
 - MIT License added for original Mega Bench code, docs and project assets.

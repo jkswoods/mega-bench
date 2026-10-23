@@ -23,6 +23,7 @@ public final class MegaBenchPlugin extends JavaPlugin {
     static MegaBenchPlugin instance;
     static ResourceType<EntityStore,Progress> progressType;
     Catalogue catalogue;
+    Compatibility compatibility;
     static final Map<UUID,NativeBridge> sessions=new java.util.concurrent.ConcurrentHashMap<>();
     public MegaBenchPlugin(JavaPluginInit init){super(init);}
     @Override protected void setup(){
@@ -33,10 +34,11 @@ public final class MegaBenchPlugin extends JavaPlugin {
         getEntityStoreRegistry().registerSystem(new CraftGate());
     }
     @Override protected void start(){
-        catalogue=new Catalogue();
+        compatibility=Compatibility.load(getDataDirectory().resolve("compatibility.json"));
+        catalogue=new Catalogue(compatibility);
         getLogger().atInfo().log("MB_CATALOGUE %s",catalogue.sources.values().stream().map(s->s.group()+":"+s.id()+":"+s.supported()+":"+s.recipes().size()).toList());
         for(var source:catalogue.sources.values())if(source.supported()&&source.bench()!=null&&source.bench().getCategories()!=null)getLogger().atInfo().log("MB_CATEGORIES %s %s",source.id(),Arrays.stream(source.bench().getCategories()).map(c->c.getId()).toList());
-        getLogger().atInfo().log("Mega Bench 0.1.0-alpha.1: personal workbench unlocks and tiers with original native crafting. Experimental preview for Hytale 0.7.4.");
+        getLogger().atInfo().log("Mega Bench 0.1.0-alpha.2: discovers native crafting benches from loaded packs. Compatibility settings: %s",getDataDirectory().resolve("compatibility.json"));
     }
     static Progress progress(Store<EntityStore>s){return s.getResource(progressType);}
     static boolean present(World w,NativeBridge.Position p){
@@ -49,7 +51,8 @@ public final class MegaBenchPlugin extends JavaPlugin {
     void open(Store<EntityStore>s,Ref<EntityStore>r,PlayerRef p,NativeBridge.Position at){
         if(!present(s.getExternalData().getWorld(),at)||p.getTransform().getPosition().distanceSquared(at.x()+.5,at.y()+.5,at.z()+.5)>64)return;
         var player=s.getComponent(r,Player.getComponentType());if(player==null)return;
-        try{var page=new MegaBenchPage(p,at,catalogue);player.getPageManager().openCustomPage(r,s,page);cue(s,r,"Handling");}
+        // Scan when opening, after all plugins have had the chance to register their assets.
+        try{catalogue=new Catalogue(compatibility);var page=new MegaBenchPage(p,at,catalogue);player.getPageManager().openCustomPage(r,s,page);cue(s,r,"Handling");}
         catch(RuntimeException ex){p.sendMessage(Message.raw("Mega Bench: "+ex.getMessage()));}
     }
     static final class ProgressTick extends TickingSystem<EntityStore>{

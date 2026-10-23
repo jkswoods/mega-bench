@@ -1,8 +1,8 @@
 {
   "Group": "MegaBench",
   "Name": "MegaBench",
-  "Version": "0.1.0-alpha.1",
-  "Description": "Experimental Alpha: personal workbench unlocks and tiers, shared recipe browser and native crafting.",
+  "Version": "0.1.0-alpha.2",
+  "Description": "Experimental Alpha: automatic native crafting bench discovery, personal unlocks and tiers.",
   "ServerVersion": "=0.7.4",
   "Main": "dev.megabench.MegaBenchPlugin",
   "IncludesAssetPack": true
