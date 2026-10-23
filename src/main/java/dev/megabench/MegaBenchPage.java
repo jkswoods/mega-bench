@@ -27,7 +27,7 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
     }
     record Entry(Catalogue.Source source,CraftingRecipe recipe){}
     static final int COLUMNS=8,PAGE_SIZE=32;
-    static final String LIMIT_NOTICE="Private test build";
+    static final String LIMIT_NOTICE="Experimental Alpha";
     final NativeBridge.Position at;final Catalogue catalogue;
     final Map<String,String> sourceRows=new HashMap<>();
     NativeBridge bridge;boolean dismissed;long version=1,nextLive;int offset,benchChoice,quantity=1;
@@ -64,9 +64,13 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
         for(int i=0;i<categories.size();i++){
             String sel="#Categories["+i+"]",id=categories.get(i);c.append("#Categories","Pages/MegaBench/Category.ui");
             var anchor=new Anchor();anchor.setWidth(Value.of(Math.min(82,715/categories.size()-5)));anchor.setHeight(Value.of(62));anchor.setRight(Value.of(5));c.setObject(sel+".Anchor",anchor);
-            String icon="Icons/ItemsGenerated/Bench_WorkBench.png";
-            if(src!=null&&src.bench()!=null&&src.bench().getCategories()!=null)for(var cat:src.bench().getCategories())if(cat.getId().equals(id)&&cat.getIcon()!=null)icon=cat.getIcon();
-            c.set(sel+" #CategoryIcon.Background",Value.ref("Pages/MegaBench/CategoryIcons.ui","Icon"+icon.replaceAll("[^A-Za-z0-9]","")));
+            // Let the client render loaded item artwork; never package copied game sprites.
+            String icon=src==null?"MB_MegaBench":src.item();
+            if(src!=null&&!id.equals("*"))icon=src.recipes().stream()
+                .filter(recipe->recipe.getBenchRequirement()!=null&&Arrays.stream(recipe.getBenchRequirement()).anyMatch(req->src.id().equals(req.id)&&req.categories!=null&&Arrays.asList(req.categories).contains(id)))
+                .map(Catalogue::output).filter(item->com.hypixel.hytale.server.core.asset.type.item.config.Item.getAssetMap().getAsset(item)!=null)
+                .sorted().findFirst().orElse(src.item());
+            c.set(sel+" #CategoryIcon.ItemId",icon);
             c.set(sel+".TooltipText",id.equals("*")?"All categories":NativePresentation.label(id).replaceFirst("^(EW |Foundry |Workbench |Furniture |Weapon )",""));
             c.set(sel+" #Selected.Visible",category.equals(id));bind(e,sel,"category:"+id);
         }

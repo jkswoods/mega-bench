@@ -16,24 +16,23 @@ One placeable workshop gives you a native crafting library for compatible Hytale
 
 ![Mega Bench's current native crafting interface](docs/assets/screenshots/recipe-browser.png)
 
-**Development build 0.1.0-spike5r1 · Hytale 0.7.4 · Java 25.** A downloadable mod release has not been published. The source and player guide are available for development review. Use a separate backed-up world; actual second-player checks and player visual/listening review are still pending. Processing, builder and special plugin stations need separate adapters.
+**Alpha candidate 0.1.0-alpha.1 · Hytale 0.7.4 · Java 25.** The [CurseForge project](https://www.curseforge.com/hytale/mods/mega-bench) is created, but its first file has not been uploaded. This candidate passes local build/package checks; the final native UI check is pending. The source and player guide are available for development review. Use a separate backed-up world; actual second-player checks and player visual/listening review are still pending. Processing, builder and special plugin stations need separate adapters.
+
+The guide images were captured in 0.1.0-spike5r1. Alpha keeps the same workshop model and panel layout, with category icons rendered from loaded native items instead of copied sprites.
 
 ## Build from source
 
-Use JDK 25, the pinned official Hytale server and asset pack, and the compatibility JARs listed in `config/target.json`. Game binaries, stock UI sprites and compatibility artwork are not included in this repository. The build reads the required UI images from your own supplied dependencies and verifies their hashes.
+Use JDK 25 and the pinned official Hytale server listed in `config/target.json`. The build reads that separately installed server to compile; it does not package the server, game artwork or compatibility artwork. UI icons and native Common.ui styles are resolved from the player's installed game/mods at runtime.
 
 ```sh
 python3 tools/build.py \
   --java-home /path/to/jdk25 \
-  --server-jar /path/to/HytaleServer.jar \
-  --assets-zip /path/to/Assets.zip \
-  --compat-jar /path/to/Emberworks.jar \
-  --compat-jar /path/to/FoundryFloor.jar
+  --server-jar /path/to/HytaleServer.jar
 ```
 
-The exact snapshot currently needs both compatibility packs to reproduce its complete UI resources. The `--java-home`, `--server-jar` and `--assets-zip` values may also be supplied through `MB_JAVA_HOME`, `MB_SERVER_JAR` and `MB_ASSETS_ZIP`. `JAVA_HOME` is supported as a fallback for the JDK.
+`MB_JAVA_HOME` and `MB_SERVER_JAR` may supply those paths; `JAVA_HOME` is a fallback for the JDK. Optional Emberworks and Foundry Floor are installed separately at runtime and are not required for building the mod.
 
-The build compiles the plugin, runs the progress tests and writes `build/libs/MegaBench-0.1.0-spike5r1.jar`. With the pinned inputs its SHA256 is `6eeac06431fb3c9f87cb81d4a99eae62080be0248a6a08ddbf1437afe9bcc56c`. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
+The build compiles the plugin, runs the progress tests and writes `build/libs/MegaBench-0.1.0-alpha.1.jar`. With the pinned inputs its SHA256 is `dff77ac3f030d58f8c440ab34682fd54f16796e30a8f0807c04fd5ea7970bdf0`. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
 
 ## Build the guide
 
@@ -45,4 +44,4 @@ MB_DOCS_PYTHON=.venv-docs/bin/python bash tools/build_player_guide.sh
 
 The strict build writes `build/player-site/`. GitHub Pages deployment uses a manually dispatched workflow on `main`; pull requests only build the guide.
 
-No redistribution license has been selected. See [third-party notices](THIRD_PARTY_NOTICES.md) for game dependencies, original assets and generated sound attribution.
+Mega Bench's original code and assets use the [MIT License](LICENSE). Game assets and third-party components retain their own terms; see [third-party notices](THIRD_PARTY_NOTICES.md).

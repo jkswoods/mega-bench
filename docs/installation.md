@@ -4,7 +4,7 @@ Mega Bench is a standard **JAR mod** for **Hytale 0.7.4 / Java 25**. It does not
 
 ## Get the matching build
 
-A downloadable binary release has not been published. Use a matching development JAR supplied for testing, or build from the [source repository](https://github.com/jkswoods/mega-bench#build-from-source). The current filename is `MegaBench-0.1.0-spike5r1.jar`.
+The [CurseForge project](https://www.curseforge.com/hytale/mods/mega-bench) has been created, but its first file is awaiting the final native UI check and upload. Use a matching development JAR supplied for testing, or build from the [source repository](https://github.com/jkswoods/mega-bench#build-from-source). The current filename is `MegaBench-0.1.0-alpha.1.jar`.
 
 ## Add it to a test world
 

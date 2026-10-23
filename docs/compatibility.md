@@ -2,7 +2,7 @@
 
 ## Supported target
 
-**Mega Bench 0.1.0-spike5r1** targets **Hytale 0.7.4 / Java 25**. Use the exact matching development build and a backed-up test world. Other Hytale versions are not verified.
+**Mega Bench 0.1.0-alpha.1 candidate** targets **Hytale 0.7.4 / Java 25**. Use the exact matching development build and a backed-up test world. Other Hytale versions are not verified.
 
 ## Initial adapters
 

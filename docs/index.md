@@ -6,7 +6,11 @@ Mega Bench brings compatible workbenches into one spacious native Hytale interfa
 
 Your unlocks belong to you in that world. Replacing the Mega Bench keeps your progress. Unlocking a station pays for its crafting capability; it does not also give you a physical copy of that station.
 
-**Current version:** development build **0.1.0-spike5r1**, for **Hytale 0.7.4 / Java 25**. No downloadable binary release is published yet. Start in a backed-up test world and read the [support limits](compatibility.md).
+**Current source candidate:** experimental Alpha **0.1.0-alpha.1**, for **Hytale 0.7.4 / Java 25**. The [CurseForge project](https://www.curseforge.com/hytale/mods/mega-bench) is created; the final native UI check and first file upload are pending. Start in a backed-up test world and read the [support limits](compatibility.md).
+
+The guide screenshots were captured in development build **0.1.0-spike5r1**. Alpha retains the workshop model and panel layout, with category icons now rendered from loaded native items.
+
+**Experimental preview:** before a more stable 1.0.0, minor updates may change recipes, balance, behaviour or saved data. Back up the complete world and player data before upgrading.
 
 ## Make room for a workshop
 

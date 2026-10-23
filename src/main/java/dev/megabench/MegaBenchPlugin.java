@@ -10,10 +10,6 @@ import com.hypixel.hytale.protocol.SoundCategory;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.asset.type.soundevent.config.SoundEvent;
-import com.hypixel.hytale.server.core.command.system.*;
-import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
-import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
-import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Interaction;
 import com.hypixel.hytale.server.core.plugin.*;
@@ -35,14 +31,12 @@ public final class MegaBenchPlugin extends JavaPlugin {
         getCodecRegistry(Interaction.CODEC).register("MB_Open",OpenInteraction.class,OpenInteraction.CODEC);
         getEntityStoreRegistry().registerSystem(new ProgressTick());
         getEntityStoreRegistry().registerSystem(new CraftGate());
-        getCommandRegistry().registerCommand(new Lab());
-        getCommandRegistry().registerCommand(new Inspect());
     }
     @Override protected void start(){
         catalogue=new Catalogue();
         getLogger().atInfo().log("MB_CATALOGUE %s",catalogue.sources.values().stream().map(s->s.group()+":"+s.id()+":"+s.supported()+":"+s.recipes().size()).toList());
         for(var source:catalogue.sources.values())if(source.supported()&&source.bench()!=null&&source.bench().getCategories()!=null)getLogger().atInfo().log("MB_CATEGORIES %s %s",source.id(),Arrays.stream(source.bench().getCategories()).map(c->c.getId()).toList());
-        getLogger().atInfo().log("Mega Bench spike5r1: paid personal workbench tiers and original native crafting. Scoped tier2/tier3, open-context autosave and normal reload proof retained. Human visuals/listening and real second client remain pending.");
+        getLogger().atInfo().log("Mega Bench 0.1.0-alpha.1: personal workbench unlocks and tiers with original native crafting. Experimental preview for Hytale 0.7.4.");
     }
     static Progress progress(Store<EntityStore>s){return s.getResource(progressType);}
     static boolean present(World w,NativeBridge.Position p){
@@ -61,7 +55,6 @@ public final class MegaBenchPlugin extends JavaPlugin {
     static final class ProgressTick extends TickingSystem<EntityStore>{
         @Override public void tick(float dt,int index,Store<EntityStore>s){progress(s).tick(dt);for(var session:sessions.values())if(session.store==s)session.pulse();}
     }
-    static boolean lab(World w){for(var part:w.getSavePath())if(part.toString().equals("MegaBenchBridgeLab"))return true;return false;}
     static final class CraftGate extends EntityEventSystem<EntityStore,CraftRecipeEvent.Pre>{
         CraftGate(){super(CraftRecipeEvent.Pre.class);}
         @Override public Query<EntityStore> getQuery(){return Player.getComponentType();}
@@ -69,25 +62,6 @@ public final class MegaBenchPlugin extends JavaPlugin {
             var player=chunk.getComponent(index,PlayerRef.getComponentType());if(player==null)return;
             var session=sessions.get(player.getUuid());
             if(session!=null&&session.store==s&&!NativeBridge.admitted(session,event.getCraftedRecipe(),event.getQuantity()))event.setCancelled(true);
-        }
-    }
-    final class Lab extends AbstractPlayerCommand {
-        final RequiredArg<Integer>x,y,z;
-        Lab(){super("megabench-lab","Open an actual nearby Mega Bench in the private capability lab");x=withRequiredArg("x","X",ArgTypes.INTEGER);y=withRequiredArg("y","Y",ArgTypes.INTEGER);z=withRequiredArg("z","Z",ArgTypes.INTEGER);}
-        @Override protected void execute(CommandContext c,Store<EntityStore>s,Ref<EntityStore>r,PlayerRef p,World w){
-            if(!p.getPacketHandler().isLocalConnection()||!lab(w)){p.sendMessage(Message.raw("Private MegaBenchBridgeLab only"));return;}
-            open(s,r,p,new NativeBridge.Position(c.get(x),c.get(y),c.get(z)));
-        }
-    }
-    final class Inspect extends AbstractPlayerCommand {
-        Inspect(){super("megabench-status","Private capability lab: log native inventory and this world's paid bench progress");}
-        @Override protected void execute(CommandContext c,Store<EntityStore>s,Ref<EntityStore>r,PlayerRef p,World w){
-            if(!p.getPacketHandler().isLocalConnection()||!lab(w))return;
-            var inventory=NativeBridge.inventory(s,r);var slots=new ArrayList<String>();
-            for(short i=0;i<inventory.getCapacity();i++){var stack=inventory.getItemStack(i);if(stack!=null&&!stack.isEmpty())slots.add(i+":"+stack.getItemId()+"x"+stack.getQuantity()+":"+stack.getMetadata());}
-            var data=progress(s).player(p.getUuid());
-            getLogger().atInfo().log("MB_STATUS player=%s world=%s slots=%s progress=%s",p.getUuid(),w.getName(),slots,new com.google.gson.Gson().toJson(data));
-            p.sendMessage(Message.raw("Mega Bench lab snapshot logged. Paid benches: "+data.tiers));
         }
     }
 }

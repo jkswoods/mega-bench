@@ -19,12 +19,10 @@ def digest(data):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--server-jar', type=Path, default=os.environ.get('MB_SERVER_JAR'))
-    parser.add_argument('--assets-zip', type=Path, default=os.environ.get('MB_ASSETS_ZIP'))
-    parser.add_argument('--compat-jar', type=Path, action='append', default=[])
     parser.add_argument('--java-home', type=Path, default=os.environ.get('MB_JAVA_HOME') or os.environ.get('JAVA_HOME'))
     args = parser.parse_args()
-    if not args.server_jar or not args.assets_zip:
-        parser.error('Supply --server-jar and --assets-zip from an official Hytale installation.')
+    if not args.server_jar:
+        parser.error('Supply --server-jar from an official Hytale installation.')
     pin = json.loads((ROOT / 'config/target.json').read_text())
     if digest(args.server_jar.read_bytes()) != pin['server_sha256']:
         parser.error('Server JAR does not match the pinned Hytale build in config/target.json.')
@@ -56,25 +54,6 @@ def main():
         for path in sorted(folder.rglob('*')):
             if path.is_file():
                 entries[path.relative_to(folder).as_posix()] = path.read_bytes()
-    # Hytale requires referenced UI sprites inside the mod's Custom UI boundary.
-    # Read these from the user's own dependencies; never vendor game art in Git.
-    packs = [args.assets_zip, *args.compat_jar]
-    manifest = json.loads((ROOT / 'config/external-ui.json').read_text())
-    for item in manifest['files']:
-        found = None
-        for pack in packs:
-            with zipfile.ZipFile(pack) as archive:
-                try:
-                    data = archive.read(item['source'])
-                except KeyError:
-                    continue
-                if digest(data) == item['sha256']:
-                    found = data
-                    break
-        if found is None:
-            parser.error('Missing pinned UI image: ' + item['source'] +
-                         '. Supply the matching compatibility JARs with --compat-jar; see README.md.')
-        entries[item['target']] = found
     mod = json.loads(entries['manifest.json'])
     output = ROOT / 'build/libs' / ('MegaBench-' + mod['Version'] + '.jar')
     output.parent.mkdir(parents=True, exist_ok=True)

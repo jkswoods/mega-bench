@@ -67,14 +67,14 @@ $C.@PageOverlay {
        Anchor: (Width: 682, Height: 302); SlotsPerRow: 9;
        AreItemsDraggable: false; DisplayItemQuantity: true; HitTestVisible: true;
        RenderItemQualityBackground: true; ShowScrollbar: false;
-       Style: (SlotSize: 74, SlotIconSize: 64, SlotSpacing: 2, SlotBackground: "Slot.png");
+       Style: (SlotSize: 74, SlotIconSize: 64, SlotSpacing: 2, SlotBackground: "../../Common/BlockSelectorSlotBackground.png");
       }
       Group { Anchor: (Height: 8); }
       ItemGrid #PlayerHotbar {
        Anchor: (Width: 682, Height: 74); SlotsPerRow: 9;
        AreItemsDraggable: false; DisplayItemQuantity: true; HitTestVisible: true;
        RenderItemQualityBackground: true; ShowScrollbar: false;
-       Style: (SlotSize: 74, SlotIconSize: 64, SlotSpacing: 2, SlotBackground: "Slot.png");
+       Style: (SlotSize: 74, SlotIconSize: 64, SlotSpacing: 2, SlotBackground: "../../Common/BlockSelectorSlotBackground.png");
       }
      }
     }
