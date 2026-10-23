@@ -1,6 +1,6 @@
 # Mega Bench in Hytale
 
-The screenshots in this guide show **Mega Bench 0.1.0-spike5r1 in Hytale 0.7.4**. They demonstrate the actual native interface rather than a web mockup. Photography scenes may use Creative setup and supplied test ingredients; they do not prove a complete survival progression route.
+The recipe browser, native craft and compatibility images show **Mega Bench 0.1.0-alpha.1 in Hytale 0.7.4**. The placed-bench photos and unlock/upgrade walkthrough are from **0.1.0-spike5r1**, with the same model and panel layout. These are actual native screenshots. Photography scenes may use Creative setup and supplied test ingredients; they do not prove a complete survival progression route.
 
 Open a screenshot to view it at full size, especially when reading UI labels on a phone.
 
@@ -42,7 +42,7 @@ Open a screenshot to view it at full size, especially when reading UI labels on 
 
 ## Original categories
 
-[![Emberworks storage category in Mega Bench](assets/screenshots/emberworks-categories.png)](assets/screenshots/emberworks-categories.png)
+[![Emberworks machine category in Mega Bench](assets/screenshots/emberworks-categories.png)](assets/screenshots/emberworks-categories.png)
 
 *The original Emberworks tabs remain available inside the library.*
 

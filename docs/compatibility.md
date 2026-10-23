@@ -2,7 +2,7 @@
 
 ## Supported target
 
-**Mega Bench 0.1.0-alpha.1 candidate** targets **Hytale 0.7.4 / Java 25**. Use the exact matching development build and a backed-up test world. Other Hytale versions are not verified.
+**Mega Bench 0.1.0-alpha.1** targets **Hytale 0.7.4 / Java 25**. Use the exact matching Alpha build and a backed-up test world. Other Hytale versions are not verified.
 
 ## Initial adapters
 
@@ -14,7 +14,7 @@
 | Processing and fuel stations | Use the original station directly |
 | Builder, diagram and unknown plugin interfaces | Separate adapters required |
 
-Current native checks covered paid stock Workbench tiers two and three, an Emberworks Supply Crate and Foundry Poured Factory Concrete. These examples do not establish every recipe or every version combination. The tested compatibility assets are recorded in the source build configuration.
+Current native checks covered paid stock Workbench tiers two and three, an Emberworks Supply Crate and Foundry Poured Factory Concrete. These examples do not establish every recipe or every version combination. The tested compatibility assets are recorded in the source build configuration. The final Alpha also passed native UI loading, all seven Emberworks tabs, Foundry Floor browsing, one exact 3-Iron Bear Trap craft and a normal save/reload with paid tiers intact.
 
 Mega Bench does not provide recursive crafting, a storage network, shared team progress or universal third-party compatibility. Processing-only products retain their source machine rules; the library does not turn them into ordinary free crafts.
 

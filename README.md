@@ -16,9 +16,9 @@ One placeable workshop gives you a native crafting library for compatible Hytale
 
 ![Mega Bench's current native crafting interface](docs/assets/screenshots/recipe-browser.png)
 
-**Alpha candidate 0.1.0-alpha.1 · Hytale 0.7.4 · Java 25.** The [CurseForge project](https://www.curseforge.com/hytale/mods/mega-bench) is created, but its first file has not been uploaded. This candidate passes local build/package checks; the final native UI check is pending. The source and player guide are available for development review. Use a separate backed-up world; actual second-player checks and player visual/listening review are still pending. Processing, builder and special plugin stations need separate adapters.
+**Alpha 0.1.0-alpha.1 · Hytale 0.7.4 · Java 25.** The exact native-checked JAR is submitted to [CurseForge](https://www.curseforge.com/hytale/mods/mega-bench) and is **under review**. Public availability depends on moderator approval. Use a separate backed-up world; actual second-player checks and player visual/listening review remain pending. Processing, builder and special plugin stations need separate adapters.
 
-The guide images were captured in 0.1.0-spike5r1. Alpha keeps the same workshop model and panel layout, with category icons rendered from loaded native items instead of copied sprites.
+The current Alpha UI screenshots use native item icons. Placed-bench photos and the unlock/upgrade walkthrough retain the unchanged model and panel layout from 0.1.0-spike5r1.
 
 ## Build from source
 
