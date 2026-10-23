@@ -1,0 +1,7 @@
+Button {
+ Anchor: (Width: 82, Height: 62, Right: 5);
+ Style: (Default: (Background: "../../Common/Tab.png"), Hovered: (Background: "../../Common/Tab.png"), Pressed: (Background: "../../Common/Tab.png"));
+ Group { Anchor: (Full: 0); Background: "../../Common/TabOverlay.png"; }
+ Group #Selected { Anchor: (Full: 0); Background: "../../Common/TabSelectedOverlay.png"; Visible: false; }
+ Group #CategoryIcon { Anchor: (Width: 44, Height: 44, Top: 6); }
+}

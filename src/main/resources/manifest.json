@@ -1,0 +1,9 @@
+{
+  "Group": "MegaBench",
+  "Name": "MegaBench",
+  "Version": "0.1.0-spike5r1",
+  "Description": "Private development build: personal workbench unlocks and tiers, shared recipe browser and native crafting.",
+  "ServerVersion": "=0.7.4",
+  "Main": "dev.megabench.MegaBenchPlugin",
+  "IncludesAssetPack": true
+}

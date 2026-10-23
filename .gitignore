@@ -1,0 +1,14 @@
+build/
+site/
+.venv*/
+__pycache__/
+*.pyc
+.DS_Store
+.publication-policy.json
+.env
+.env.*
+*.log
+project/
+runtime/
+data/verification/
+AGENTS.md

@@ -1,0 +1,87 @@
+{
+  "provider": "ElevenLabs",
+  "method": "Connected Sound Effects workflow",
+  "families": [
+    {
+      "family": "Handling",
+      "prompt": "A heavy oak workshop catalogue drawer slides open and settles with a soft brass latch click, close and dry, one short action.",
+      "model": "eleven_text_to_sound_v2",
+      "duration_seconds": 0.48,
+      "settings": [
+        {
+          "label": "Prompt influence",
+          "value": "0.3"
+        },
+        {
+          "label": "Loop",
+          "value": "False"
+        }
+      ],
+      "runtime_export": "Common/Sounds/MegaBench/MB_Handling.ogg",
+      "runtime_sha256": "7b2eaa31b329108567223561a9ce179c38c4be16850017dc42125f8647419a81",
+      "trigger": "accepted nearby Mega Bench open",
+      "audience": "acting player only",
+      "loop": false,
+      "export_settings": {
+        "filters": "silenceremove=start_periods=1:start_duration=0.005:start_threshold=-48dB,areverse,silenceremove=start_periods=1:start_duration=0.02:start_threshold=-48dB,areverse,volume=0.45,afade=t=in:d=0.01",
+        "channels": 1,
+        "sample_rate": 48000,
+        "format": "ogg vorbis libsndfile default"
+      }
+    },
+    {
+      "family": "Unlock",
+      "prompt": "One brass workshop index stamp presses down with a satisfying compact clunk and tiny bright mechanical ring, close dry sound.",
+      "model": "eleven_text_to_sound_v2",
+      "duration_seconds": 0.48,
+      "settings": [
+        {
+          "label": "Prompt influence",
+          "value": "0.3"
+        },
+        {
+          "label": "Loop",
+          "value": "False"
+        }
+      ],
+      "runtime_export": "Common/Sounds/MegaBench/MB_Unlock.ogg",
+      "runtime_sha256": "c9a0c490f3e09b24912e5452c09d166063884d35dff4e8af8d24b886bd727bdd",
+      "trigger": "accepted exact server unlock/upgrade debit",
+      "audience": "acting player only",
+      "loop": false,
+      "export_settings": {
+        "filters": "silenceremove=start_periods=1:start_duration=0.005:start_threshold=-48dB,areverse,silenceremove=start_periods=1:start_duration=0.02:start_threshold=-48dB,areverse,volume=0.45,afade=t=in:d=0.01",
+        "channels": 1,
+        "sample_rate": 48000,
+        "format": "ogg vorbis libsndfile default"
+      }
+    },
+    {
+      "family": "Craft",
+      "prompt": "A small hand-operated workshop press makes one firm wooden and steel clack with a short low spring release, close and dry.",
+      "model": "eleven_text_to_sound_v2",
+      "duration_seconds": 3,
+      "settings": [
+        {
+          "label": "Prompt influence",
+          "value": "0.3"
+        },
+        {
+          "label": "Loop",
+          "value": "False"
+        }
+      ],
+      "runtime_export": "Common/Sounds/MegaBench/MB_Craft.ogg",
+      "runtime_sha256": "8b86c8edf12b843def563590a74816ac48c7fb5257648c23771a9c068592eda9",
+      "trigger": "accepted native queue admission",
+      "audience": "acting player only",
+      "loop": false,
+      "export_settings": {
+        "filters": "silenceremove=start_periods=1:start_duration=0.005:start_threshold=-48dB,areverse,silenceremove=start_periods=1:start_duration=0.02:start_threshold=-48dB,areverse,volume=0.45,afade=t=in:d=0.01",
+        "channels": 1,
+        "sample_rate": 48000,
+        "format": "ogg vorbis libsndfile default"
+      }
+    }
+  ]
+}

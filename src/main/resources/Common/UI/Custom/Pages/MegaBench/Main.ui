@@ -1,0 +1,109 @@
+$C = "../../Common.ui";
+$C.@PageOverlay {
+ Group #Root { Anchor: (Width: 1611, Height: 1016); LayoutMode: Top;
+  Group { Anchor: (Height: 54); LayoutMode: Left;
+   Label { FlexWeight: 1; Text: "MEGA BENCH"; Style: (FontSize: 24, FontName: "Secondary", TextColor: #e8cc81, RenderBold: true, VerticalAlignment: Center); }
+   $C.@SmallSecondaryTextButton #Refresh { Anchor: (Width: 120, Height: 36, Right: 8); Text: "Refresh"; }
+   $C.@SmallSecondaryTextButton #Close { Anchor: (Width: 100, Height: 36); Text: "Close"; }
+  }
+  Group { Anchor: (Height: 954); LayoutMode: Left;
+   $C.@DecoratedContainer { Anchor: (Width: 410, Height: 892, Right: 38);
+    #Title { $C.@Title { @Text = "Workbenches"; @Alignment = Start; } }
+    #Content { Padding: (Full: 17, Top: 8);
+     Label { Anchor: (Height: 30); Text: "Choose a crafting station"; Style: (FontSize: 16, TextColor: #96a9be, VerticalAlignment: Center); }
+     Group #Sources { FlexWeight: 1; LayoutMode: TopScrolling; ScrollbarStyle: $C.@DefaultScrollbarStyle; }
+     Group #BenchControls { Anchor: (Height: 338, Top: 10); LayoutMode: Top;
+      Group { Anchor: (Height: 64); LayoutMode: Left;
+       ItemIcon #BenchIcon { Anchor: (Width: 60, Height: 60, Right: 8); HitTestVisible: false; }
+       Group { FlexWeight: 1; LayoutMode: Top;
+        Label #BenchTitle { Anchor: (Height: 36); Style: (FontSize: 17, TextColor: #d3d6db, RenderBold: true, Wrap: true, VerticalAlignment: Center); }
+        Label #BenchState { Anchor: (Height: 24); Style: (FontSize: 15, TextColor: #96a9be, VerticalAlignment: Center); }
+       }
+      }
+      Group { Anchor: (Height: 32, Bottom: 8); LayoutMode: Left;
+       $C.@SmallSecondaryTextButton #BenchUnlock { Anchor: (Width: 181, Height: 30, Right: 8); Text: "Unlock"; }
+       $C.@SmallSecondaryTextButton #BenchUpgrade { Anchor: (Width: 181, Height: 30); Text: "Upgrade"; }
+      }
+      Group #BenchOptions { Anchor: (Height: 28, Bottom: 4); LayoutMode: Left;
+       $C.@SmallSecondaryTextButton #BenchPrevious { Anchor: (Width: 42, Height: 26); Text: "<"; }
+       Label #BenchOption { FlexWeight: 1; Style: (FontSize: 13, TextColor: #96a9be, HorizontalAlignment: Center, VerticalAlignment: Center); }
+       $C.@SmallSecondaryTextButton #BenchNext { Anchor: (Width: 42, Height: 26); Text: ">"; }
+      }
+      Group #BenchIngredients { Anchor: (Height: 136); LayoutMode: TopScrolling; ScrollbarStyle: $C.@DefaultScrollbarStyle; }
+      Label #BenchTime { Anchor: (Height: 24); Style: (FontSize: 14, TextColor: #96a9be, VerticalAlignment: Center); }
+      Label #BenchAvailability { Anchor: (Height: 26); Style: (FontSize: 14, TextColor: #e3be83, VerticalAlignment: Center); }
+      $C.@TextButton #BenchPay { Anchor: (Height: 42, Top: 6); Text: "Unlock workbench"; }
+     }
+     Label { Anchor: (Height: 30, Top: 8); Text: "Your unlocks in this world"; Style: (FontSize: 13, TextColor: #96a9be, VerticalAlignment: Center); }
+    }
+   }
+   Group { Anchor: (Width: 715, Height: 954); LayoutMode: Top;
+    Group #Categories { Anchor: (Height: 62); LayoutMode: Left; }
+    $C.@Container { Anchor: (Width: 715, Height: 424);
+     #Title { $C.@Title #Context { @Text = "Recipes"; @Alignment = Start; } }
+     #Content { Padding: (Full: 17, Top: 8);
+      Group { Anchor: (Height: 36, Bottom: 8); LayoutMode: Left;
+       $C.@TextField #Search { Anchor: (Width: 194, Height: 32, Right: 6); PlaceholderText: "Search recipes…"; }
+       $C.@SmallSecondaryTextButton #SearchGo { Anchor: (Width: 70, Height: 32, Right: 8); Text: "Find"; }
+       $C.@SmallSecondaryTextButton #Craftable { Anchor: (Width: 110, Height: 32, Right: 4); Text: "Craftable"; }
+       $C.@SmallSecondaryTextButton #Unlocked { Anchor: (Width: 110, Height: 32, Right: 4); Text: "Unlocked"; }
+       $C.@SmallSecondaryTextButton #All { Anchor: (Width: 70, Height: 32); Text: "All"; }
+      }
+      Group #Grid { FlexWeight: 1; LayoutMode: TopScrolling; ScrollbarStyle: $C.@DefaultScrollbarStyle; }
+      Group { Anchor: (Height: 32, Top: 4); LayoutMode: Left;
+       $C.@SmallSecondaryTextButton #Previous { Anchor: (Width: 60, Height: 28); Text: "<"; }
+       Label #Count { FlexWeight: 1; Style: (FontSize: 14, TextColor: #96a9be, HorizontalAlignment: Center, VerticalAlignment: Center); }
+       $C.@SmallSecondaryTextButton #Next { Anchor: (Width: 60, Height: 28); Text: ">"; }
+      }
+     }
+    }
+    Group { Anchor: (Height: 8); }
+    $C.@Container { Anchor: (Width: 715, Height: 460);
+     #Title { $C.@Title { @Text = "Inventory"; @Alignment = Start; }
+      Label { Anchor: (Width: 220, Right: 18); Text: "LIVE PREVIEW"; Style: (FontSize: 12, TextColor: #96a9be, HorizontalAlignment: End, VerticalAlignment: Center); }
+     }
+     #Content { Padding: (Full: 17, Top: 8);
+      ItemGrid #PlayerStorage {
+       Anchor: (Width: 682, Height: 302); SlotsPerRow: 9;
+       AreItemsDraggable: false; DisplayItemQuantity: true; HitTestVisible: true;
+       RenderItemQualityBackground: true; ShowScrollbar: false;
+       Style: (SlotSize: 74, SlotIconSize: 64, SlotSpacing: 2, SlotBackground: "Slot.png");
+      }
+      Group { Anchor: (Height: 8); }
+      ItemGrid #PlayerHotbar {
+       Anchor: (Width: 682, Height: 74); SlotsPerRow: 9;
+       AreItemsDraggable: false; DisplayItemQuantity: true; HitTestVisible: true;
+       RenderItemQualityBackground: true; ShowScrollbar: false;
+       Style: (SlotSize: 74, SlotIconSize: 64, SlotSpacing: 2, SlotBackground: "Slot.png");
+      }
+     }
+    }
+   }
+   Group { Anchor: (Width: 38); }
+   $C.@DecoratedContainer { Anchor: (Width: 410, Height: 892);
+    #Title { $C.@Title #Selection { @Text = "Recipe"; } }
+    #Content { Padding: (Full: 17, Top: 8);
+     ItemIcon #OutputIcon { Anchor: (Width: 188, Height: 156); ShowItemTooltip: true; }
+     Label #OutputCount { Anchor: (Height: 26); Style: (FontSize: 18, TextColor: #e8cc81, HorizontalAlignment: Center, VerticalAlignment: Center); }
+     Label #Time { Anchor: (Height: 24); Style: (FontSize: 15, TextColor: #96a9be, HorizontalAlignment: Center, VerticalAlignment: Center); }
+     Group { Anchor: (Height: 34, Top: 4); LayoutMode: Left;
+      $C.@SmallSecondaryTextButton #QuantityDown { Anchor: (Width: 54, Height: 30); Text: "-"; }
+      Label #CraftQuantity { FlexWeight: 1; Style: (FontSize: 16, TextColor: #d3d6db, HorizontalAlignment: Center, VerticalAlignment: Center); }
+      $C.@SmallSecondaryTextButton #QuantityUp { Anchor: (Width: 54, Height: 30); Text: "+"; }
+     }
+     Group { Anchor: (Height: 30, Top: 8); Background: #0e1720(0.65);
+      Label { Text: "INGREDIENTS"; Style: (FontSize: 15, TextColor: #b4c8c9, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true); }
+     }
+     Group #Ingredients { Anchor: (Height: 216, Top: 8); LayoutMode: TopScrolling; ScrollbarStyle: $C.@DefaultScrollbarStyle; }
+     Group { FlexWeight: 1; LayoutMode: TopScrolling; ScrollbarStyle: $C.@DefaultScrollbarStyle;
+      Label #Detail { Anchor: (Height: 240); Padding: (Top: 12); Style: (FontSize: 16, TextColor: #96a9be, Wrap: true); }
+     }
+     Label #Availability { Anchor: (Height: 24); Style: (FontSize: 14, TextColor: #96a9be, HorizontalAlignment: Center, VerticalAlignment: Center); }
+     $C.@TextButton #Act { Anchor: (Height: 42, Top: 6); Text: "Choose a recipe"; }
+     $C.@SmallSecondaryTextButton #CancelCraft { Anchor: (Height: 28, Top: 4); Text: "Cancel craft"; }
+     Label #Notice { Anchor: (Height: 56, Top: 10); Style: (FontSize: 14, TextColor: #e3be83, Wrap: true); }
+    }
+   }
+  }
+ }
+}

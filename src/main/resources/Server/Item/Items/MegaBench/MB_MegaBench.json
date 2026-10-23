@@ -1,0 +1,91 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.MB_MegaBench.name",
+    "Description": "server.items.MB_MegaBench.description"
+  },
+  "Icon": "Icons/ItemsGenerated/MB_MegaBench.png",
+  "Categories": [
+    "Furniture.Benches"
+  ],
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Iron",
+        "Quantity": 8
+      },
+      {
+        "ItemId": "Ingredient_Bar_Copper",
+        "Quantity": 4
+      },
+      {
+        "ResourceTypeId": "Wood_Trunk",
+        "Quantity": 12
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "Workbench",
+        "Categories": [
+          "Workbench_Crafting"
+        ]
+      }
+    ],
+    "TimeSeconds": 5
+  },
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Model",
+    "Opacity": "Transparent",
+    "CustomModel": "Blocks/MegaBench/MB_MegaBench.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Blocks/MegaBench/MB_Palette.png",
+        "Weight": 1
+      }
+    ],
+    "VariantRotation": "NESW",
+    "HitboxType": "MB_MegaBench",
+    "Bench": {
+      "Type": "Crafting",
+      "Id": "MegaBench",
+      "Categories": []
+    },
+    "BlockEntity": {
+      "Components": {
+        "BenchBlock": {
+          "TierLevel": 64
+        }
+      }
+    },
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Benches"
+      }
+    },
+    "BlockParticleSetId": "Wood",
+    "ParticleColor": "#744f2e",
+    "BlockSoundSetId": "Wood",
+    "PhysicalMaterialId": "Wood",
+    "Support": {
+      "Down": [
+        {
+          "FaceType": "Full"
+        }
+      ]
+    },
+    "Interactions": {
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "MB_Open"
+          }
+        ]
+      }
+    },
+    "TextureComputedColor": "#473022"
+  },
+  "PlayerAnimationsId": "Block",
+  "MaxStack": 1,
+  "ItemLevel": 1
+}

@@ -1,0 +1,7 @@
+Button {
+ Anchor: (Width: 74, Height: 74, Right: 2);
+ Style: (Default: (Background: "Slot.png"), Hovered: (Background: "Slot.png"), Pressed: (Background: "Slot.png"));
+ ItemIcon #Icon { Anchor: (Full: 5); HitTestVisible: false; }
+ Label #Amount { Anchor: (Right: 5, Bottom: 3, Width: 42, Height: 22); Style: (FontSize: 14, TextColor: #ffffff, HorizontalAlignment: End, RenderBold: true); }
+ Group #Selected { Anchor: (Left: 2, Right: 2, Bottom: 1, Height: 3); Background: #e8cc81; Visible: false; }
+}

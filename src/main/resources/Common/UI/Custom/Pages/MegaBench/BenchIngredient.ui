@@ -1,0 +1,10 @@
+@HaveStyle = LabelStyle(FontSize: 15, TextColor: #6dca9b, VerticalAlignment: Center);
+@NeedStyle = LabelStyle(FontSize: 15, TextColor: #de7979, VerticalAlignment: Center);
+Group {
+ Anchor: (Width: 181, Height: 64, Right: 6); LayoutMode: Left;
+ ItemIcon #Icon { Anchor: (Width: 46, Height: 46, Right: 6); HitTestVisible: false; }
+ Group { FlexWeight: 1; LayoutMode: Top;
+  Label #Name { Anchor: (Height: 34); Style: (FontSize: 14, TextColor: #b4c8c9, Wrap: true, VerticalAlignment: Center); }
+  Label #Quantity { Anchor: (Height: 24); Style: @HaveStyle; }
+ }
+}

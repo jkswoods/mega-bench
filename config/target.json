@@ -1,0 +1,17 @@
+{
+  "hytale_version": "0.7.4",
+  "java_release": 25,
+  "server_sha256": "23fad4c8d42b73b4139540bbae26ca0b8a43388f1e07e7b423d616e81834fa79",
+  "compatibility_assets": [
+    {
+      "mod": "Emberworks",
+      "version": "0.3.0-dev",
+      "jar_sha256": "fcc0bf21934e6436f8fdf0f5fefa9f33f12ea816118c10f4ddcc80bbc2920548"
+    },
+    {
+      "mod": "Foundry Floor",
+      "version": "0.1.0-dev filename / 0.2.0 manifest",
+      "jar_sha256": "ca530ae39fc9b055614bd0141ae894d86d505a70e894e4d7f8e80601c75cbc8c"
+    }
+  ]
+}

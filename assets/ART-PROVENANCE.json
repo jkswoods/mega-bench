@@ -1,0 +1,12 @@
+{
+  "model": "Original 41-cuboid workshop bench and original pixel palette; editable runtime model in src/main/resources/Common/Blocks/MegaBench.",
+  "item_icon": {
+    "provider": "OpenAI built-in image generation",
+    "master": "art/source/mega-bench-icon.png",
+    "runtime": "src/main/resources/Common/Icons/ItemsGenerated/MB_MegaBench.png",
+    "export": "64px/128px premultiplied-alpha LANCZOS",
+    "design": "Warm oak, slate frame, brass index controls, teal books; stock-compatible viewing angle.",
+    "notice": "Reference images are not redistributed."
+  },
+  "site_identity": "Original source-native SVG wordmark and banner in docs/assets/brand."
+}
