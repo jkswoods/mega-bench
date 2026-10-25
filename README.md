@@ -2,7 +2,7 @@
 
 [Player guide](https://jkswoods.github.io/mega-bench/) · [Getting started](https://jkswoods.github.io/mega-bench/hytale0.7/getting-started/) · [Report an issue](https://github.com/jkswoods/mega-bench/issues)
 
-![Mega Bench — One workshop. Your crafting library.](docs/assets/brand/banner.svg)
+![Mega Bench — One workshop. Your crafting library.](docs/assets/brand/banner-cinematic.png)
 
 One placeable workshop gives you a native crafting library for compatible Hytale benches. Pay a station's original recipe ingredients to unlock its capability, invest in its original tier upgrades, then search and craft its recipes from one screen. Unlocks belong to each player in that world.
 

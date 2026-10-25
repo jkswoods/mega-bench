@@ -11,5 +11,7 @@
     "gameVersion": "0.7",
     "releaseType": "alpha",
     "manualRelease": false
-  }
+  },
+  "displayName": "Mega Bench",
+  "releaseNotes": "RELEASE_NOTES.md"
 }
