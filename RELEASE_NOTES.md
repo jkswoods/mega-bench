@@ -1,3 +1,5 @@
+Includes the mod logo in the world creation and world settings mod list.
+
 ## Mega Bench release
 
 - Automatically discovers ordinary native crafting benches from enabled packs, with paid personal unlocks and original tier upgrades.
