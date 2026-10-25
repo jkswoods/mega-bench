@@ -1,6 +1,6 @@
 # Mega Bench
 
-[Player guide](https://jkswoods.github.io/mega-bench/) · [Getting started](docs/getting-started.md) · [Report an issue](https://github.com/jkswoods/mega-bench/issues)
+[Player guide](https://jkswoods.github.io/mega-bench/) · [Getting started](https://jkswoods.github.io/mega-bench/hytale0.7/getting-started/) · [Report an issue](https://github.com/jkswoods/mega-bench/issues)
 
 ![Mega Bench — One workshop. Your crafting library.](docs/assets/brand/banner.svg)
 
@@ -22,7 +22,7 @@ The current Alpha UI screenshots use native item icons. Placed-bench photos and 
 
 ## Other mod workbenches
 
-The **0.1.0-alpha.2 test build** discovers ordinary native crafting benches from any enabled pack, without mod-specific optional dependencies. It preserves original recipes and tier data; benches without a suitable craft recipe offer an explicit hand-in of one physical bench. Server exclusions and identity overrides are documented in [Other workbench support](docs/bench-support.md). Special processing and custom plugin stations still need dedicated adapters. Alpha2 has not been uploaded to CurseForge.
+The **0.1.0-alpha.2 test build** discovers ordinary native crafting benches from any enabled pack, without mod-specific optional dependencies. It preserves original recipes and tier data; benches without a suitable craft recipe offer an explicit hand-in of one physical bench. Server exclusions and identity overrides are documented in [Other workbench support](https://jkswoods.github.io/mega-bench/hytale0.7/bench-support/). Special processing and custom plugin stations still need dedicated adapters. Alpha2 has not been uploaded to CurseForge.
 
 ## Build from source
 
@@ -38,18 +38,17 @@ python3 tools/build.py \
 
 The build compiles the plugin, runs the progress and compatibility tests and writes `build/libs/MegaBench-0.1.0-alpha.2.jar`. With the pinned inputs its SHA256 is `0cbff299e64f957f71c87b3c61a28fabab3f80132aaf5bf0c87a10a6c76ae14b`. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
 
-## Build the guide
+## Documentation
 
-```sh
-python3 -m venv .venv-docs
-.venv-docs/bin/python -m pip install -r requirements-docs.txt
-MB_DOCS_PYTHON=.venv-docs/bin/python bash tools/build_player_guide.sh
-```
-
-The strict build writes `build/player-site/`. GitHub Pages deployment uses a manually dispatched workflow on `main`; pull requests only build the guide.
+The [versioned player guide](https://jkswoods.github.io/mega-bench/) is maintained on the separate [`docs` branch](https://github.com/jkswoods/mega-bench/tree/docs). In that checkout, run `npm ci --ignore-scripts`, `npm run build` and `npm run check`. Select `docs` when manually dispatching its Pages workflow.
 
 Mega Bench's original code and assets use the [MIT License](LICENSE). Game assets and third-party components retain their own terms; see [third-party notices](THIRD_PARTY_NOTICES.md).
 
 ## Compatibility and builds
 
-Current source targets Hytale `>=0.7.4 <0.8.0` and uses the `hytale0.7` support branch. See [build and release instructions](docs/build-and-release.md) for the SDK pin, candidate checks, versioned filenames and CurseForge workflow.
+Current source targets Hytale `>=0.7.4 <0.8.0` and uses the `hytale0.7` support branch. See [build and release instructions](https://jkswoods.github.io/mega-bench/hytale0.7/build-and-release/) for the SDK pin, candidate checks, versioned filenames and CurseForge workflow.
+
+## Contributing
+
+See [the contribution guide](CONTRIBUTING.md) for feature and bug-fix PR targets.
+Maintainers handle forward/back ports, and support-branch PRs require owner approval.
