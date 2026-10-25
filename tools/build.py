@@ -8,6 +8,7 @@ import os
 import shutil
 import subprocess
 import zipfile
+from release_pipeline import config, filename
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -56,7 +57,7 @@ def main():
             if path.is_file():
                 entries[path.relative_to(folder).as_posix()] = path.read_bytes()
     mod = json.loads(entries['manifest.json'])
-    output = ROOT / 'build/libs' / ('MegaBench-' + mod['Version'] + '.jar')
+    output = ROOT / 'build/libs' / filename(config(ROOT/'release.json'))
     output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for name, data in sorted(entries.items()):

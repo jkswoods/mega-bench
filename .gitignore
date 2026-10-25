@@ -12,3 +12,10 @@ project/
 runtime/
 data/verification/
 AGENTS.md
+
+.cache/
+candidate/
+cf-*.json
+cf-request.env
+candidate-run.json
+curseforge-upload.json
