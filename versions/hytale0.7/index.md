@@ -4,7 +4,7 @@ title: "One workshop. Your crafting library."
 
 # One workshop. Your crafting library. {#one-workshop-your-crafting-library}
 
-![Mega Bench](/assets/hytale0.7/brand/banner.svg)
+![Mega Bench](/assets/hytale0.7/brand/banner-cinematic.png)
 
 Mega Bench brings compatible workbenches into one spacious native Hytale interface. Unlock a station with its original recipe ingredients, invest in its next tier and browse its recipes without building a row of separate crafting benches.
 

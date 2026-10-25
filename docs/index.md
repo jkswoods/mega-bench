@@ -10,7 +10,7 @@ One workshop. Your crafting library.
 ::: button title:"Read the Hytale 0.7 guide" url:"/hytale0.7/" icon:book-open
 ::: /hero
 
-![Promotional artwork for Mega Bench](/assets/hytale0.7/brand/banner.svg)
+![Promotional artwork for Mega Bench](/assets/hytale0.7/brand/banner-cinematic.png)
 
 ## Choose your Hytale version {#hytale-versions}
 
