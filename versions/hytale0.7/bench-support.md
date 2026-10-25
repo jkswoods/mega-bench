@@ -4,7 +4,7 @@ title: "Support for other workbenches"
 
 # Support for other workbenches {#support-for-other-workbenches}
 
-**Added in the 0.1.0-alpha.2 test build.** This build has not been uploaded to CurseForge. Mega Bench discovers ordinary native crafting benches from the packs enabled in the world. No mod-specific optional dependencies or item-name prefixes are required. It reads the original registered recipes, categories, ingredients, outputs and tier data. Other mods are installed separately.
+The Hytale 0.7 support branch includes automatic discovery. Check your selected download’s release notes for feature availability. Mega Bench discovers ordinary native crafting benches from the packs enabled in the world. No mod-specific optional dependencies or item-name prefixes are required. It reads the original registered recipes, categories, ingredients, outputs and tier data. Other mods are installed separately.
 
 ## Unlock a discovered bench {#unlock-a-discovered-bench}
 
@@ -16,7 +16,7 @@ Your previous unlocks and tiers retain the same bench IDs and saved format. Clos
 
 [![Automatically discovered bench with paid tier two and an original native recipe](/assets/hytale0.7/screenshots/discovered-bench.png)](/assets/hytale0.7/screenshots/discovered-bench.png)
 
-*Hytale 0.7.4, Mega Bench 0.1.0-alpha.2. This private fixture pack deliberately uses unfamiliar bench IDs. The pictured Copper-to-Gold recipe is a test recipe and is not included in Mega Bench.*
+*Hytale 0.7.4. This private fixture pack deliberately uses unfamiliar bench IDs. The pictured Copper-to-Gold recipe is a test recipe and is not included in Mega Bench.*
 
 [![Physical-bench hand-in offered in the left unlock panel](/assets/hytale0.7/screenshots/bench-hand-in.png)](/assets/hytale0.7/screenshots/bench-hand-in.png)
 

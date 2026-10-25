@@ -34,7 +34,7 @@ These payments unlock a capability; they do not create the physical bench. A phy
 
 [![Foundry Poured Factory Concrete recipe in Mega Bench](/assets/hytale0.7/screenshots/foundry-recipe.png)](/assets/hytale0.7/screenshots/foundry-recipe.png)
 
-*The original Foundry recipe makes four blocks per craft. This 0.1.0-alpha.1 capture also shows the four previously crafted blocks in the live inventory.*
+*The original Foundry recipe makes four blocks per craft. This native capture also shows the four previously crafted blocks in the live inventory.*
 
 The hatchet's base recipe takes 4.5 seconds; the displayed value above follows Hytale 0.7.4's native tier adjustment. Ingredient and output quantities scale with the chosen number of crafts. Native source speed adjustments also apply to other eligible recipes.
 

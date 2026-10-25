@@ -10,11 +10,11 @@ Mega Bench brings compatible workbenches into one spacious native Hytale interfa
 
 Your unlocks belong to you in that world. Replacing the Mega Bench keeps your progress. Unlocking a station pays for its crafting capability; it does not also give you a physical copy of that station.
 
-**Current Alpha:** **0.1.0-alpha.1**, for **Hytale 0.7.4 / Java 25**. The native-checked JAR is submitted to [CurseForge](https://www.curseforge.com/hytale/mods/mega-bench) and is **under review**; public availability depends on moderator approval. Start in a backed-up test world and read the [support limits](compatibility.md).
+**Hytale 0.7 guide · Java 25 · Development preview.** Choose compatible downloads from [CurseForge](https://www.curseforge.com/hytale/mods/mega-bench) or [GitHub releases](https://github.com/jkswoods/mega-bench/releases), checking the selected file’s exact game-patch requirements and release notes. Start in a backed-up test world and read the [support limits](compatibility.md).
 
-Current recipe, stock craft and compatibility screenshots show **0.1.0-alpha.1**. Placed-bench photos and the unlock/upgrade walkthrough retain the unchanged model and panel layout from **0.1.0-spike5r1**.
+Recipe, stock-craft and compatibility screenshots show the native interface in Hytale 0.7.4. Placed-bench photos and the unlock/upgrade walkthrough are earlier captures with the same model and panel layout.
 
-**Experimental preview:** before a more stable 1.0.0, minor updates may change recipes, balance, behaviour or saved data. Back up the complete world and player data before upgrading.
+**Experimental preview:** updates may change recipes, balance, behaviour or saved data. Back up the complete world and player data before upgrading.
 
 ## Make room for a workshop {#make-room-for-a-workshop}
 
@@ -30,7 +30,7 @@ Craft Mega Bench at a stock Workbench using **8 Iron Ingots, 4 Copper Ingots and
 
 [![Current Mega Bench interface showing personal workbench tiers on the left, the recipe grid in the centre and selected recipe details on the right](/assets/hytale0.7/screenshots/recipe-browser.png)](/assets/hytale0.7/screenshots/recipe-browser.png)
 
-*Hytale 0.7.4, Mega Bench 0.1.0-alpha.1. Select a workbench to keep its unlock and upgrade controls beneath the source list; the centre remains focused on recipes.*
+*Hytale 0.7.4. Select a workbench to keep its unlock and upgrade controls beneath the source list; the centre remains focused on recipes.*
 
 Search your unlocked stations, switch their original category tabs, compare the ingredients you own and choose a batch of up to 16 crafts. The bottom inventory is a live preview; use the normal inventory screen to move items.
 

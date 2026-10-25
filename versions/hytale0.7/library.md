@@ -20,7 +20,7 @@ Search uses recipe names, item names and source identity. Press **Find** after e
 
 [![Emberworks machine recipes with the original category tabs](/assets/hytale0.7/screenshots/emberworks-categories.png)](/assets/hytale0.7/screenshots/emberworks-categories.png)
 
-*Mega Bench 0.1.0-alpha.1 in Hytale 0.7.4. Emberworks retains Machines, Power, Transport, Storage, Multiblocks, Components and Upgrades.*
+*Mega Bench in Hytale 0.7.4. Emberworks retains Machines, Power, Transport, Storage, Multiblocks, Components and Upgrades.*
 
 ## Check the recipe on the right {#check-the-recipe-on-the-right}
 

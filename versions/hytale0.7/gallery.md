@@ -4,7 +4,7 @@ title: "Mega Bench in Hytale"
 
 # Mega Bench in Hytale {#mega-bench-in-hytale}
 
-The recipe browser, native craft and compatibility images show **Mega Bench 0.1.0-alpha.1 in Hytale 0.7.4**. The placed-bench photos and unlock/upgrade walkthrough are from **0.1.0-spike5r1**, with the same model and panel layout. These are actual native screenshots. Photography scenes may use Creative setup and supplied test ingredients; they do not prove a complete survival progression route.
+The recipe browser, native craft and compatibility images show Mega Bench in **Hytale 0.7.4**. The placed-bench photos and unlock/upgrade walkthrough are earlier captures with the same model and panel layout. These are actual native screenshots. Photography scenes may use Creative setup and supplied test ingredients; they do not prove a complete survival progression route.
 
 Open a screenshot to view it at full size, especially when reading UI labels on a phone.
 

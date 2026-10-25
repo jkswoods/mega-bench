@@ -6,13 +6,13 @@ title: "Compatibility and multiplayer"
 
 ## Supported target {#supported-target}
 
-**Mega Bench 0.1.0-alpha.1** targets **Hytale 0.7.4 / Java 25**. Use the exact matching Alpha build and a backed-up test world. Other Hytale versions are not verified.
+This guide follows the **Hytale 0.7** support branch using **Java 25**. Native checks used Hytale 0.7.4. Read the selected download’s exact compatibility requirements and use a backed-up test world; other game patches are not established by these checks.
 
 ## Other workbenches {#other-workbenches}
 
-The **0.1.0-alpha.2 test build** adds [automatic discovery and server compatibility settings](bench-support.md) for ordinary native crafting benches from any enabled pack. It has not been uploaded to CurseForge. The Alpha1 download remains the version described below.
+The support branch provides [automatic discovery and server compatibility settings](bench-support.md) for ordinary native crafting benches from enabled packs. Read the selected download’s release notes to check whether those changes are included.
 
-## Alpha1 adapters {#alpha1-adapters}
+## Verified crafting adapters {#alpha1-adapters}
 
 | Source | What is supported |
 | --- | --- |
@@ -22,7 +22,7 @@ The **0.1.0-alpha.2 test build** adds [automatic discovery and server compatibil
 | Processing and fuel stations | Use the original station directly |
 | Builder, diagram and unknown plugin interfaces | Separate adapters required |
 
-Current native checks covered paid stock Workbench tiers two and three, an Emberworks Supply Crate and Foundry Poured Factory Concrete. These examples do not establish every recipe or every version combination. The tested compatibility assets are recorded in the source build configuration. The final Alpha also passed native UI loading, all seven Emberworks tabs, Foundry Floor browsing, one exact 3-Iron Bear Trap craft and a normal save/reload with paid tiers intact.
+Current native checks covered paid stock Workbench tiers two and three, an Emberworks Supply Crate and Foundry Poured Factory Concrete. These examples do not establish every recipe or every version combination. The tested compatibility assets are recorded in the source build configuration. Native checks also covered native UI loading, all seven Emberworks tabs, Foundry Floor browsing, one exact 3-Iron Bear Trap craft and a normal save/reload with paid tiers intact.
 
 Mega Bench does not provide recursive crafting, a storage network, shared team progress or universal third-party compatibility. Processing-only products retain their source machine rules; the library does not turn them into ordinary free crafts.
 
