@@ -16,13 +16,13 @@ One placeable workshop gives you a native crafting library for compatible Hytale
 
 ![Mega Bench's current native crafting interface](docs/assets/screenshots/recipe-browser.png)
 
-**Alpha 0.1.0-alpha.1 · Hytale 0.7.4 · Java 25.** The exact native-checked JAR is submitted to [CurseForge](https://www.curseforge.com/hytale/mods/mega-bench) and is **under review**. Public availability depends on moderator approval. Use a separate backed-up world; actual second-player checks and player visual/listening review remain pending. Processing, builder and special plugin stations need separate adapters.
+**Hytale 0.7 · Java 25 · Development preview.** Select compatible files from [CurseForge](https://www.curseforge.com/hytale/mods/mega-bench) or [GitHub releases](https://github.com/jkswoods/mega-bench/releases), reading their exact game-patch requirements and release notes. Use a separate backed-up world; actual second-player checks and player visual/listening review remain pending. Processing, builder and special plugin stations need separate adapters.
 
-The current Alpha UI screenshots use native item icons. Placed-bench photos and the unlock/upgrade walkthrough retain the unchanged model and panel layout from 0.1.0-spike5r1.
+The UI screenshots use native item icons. Placed-bench photos and the unlock/upgrade walkthrough retain the same model and panel layout in earlier native captures.
 
 ## Other mod workbenches
 
-The **0.1.0-alpha.2 test build** discovers ordinary native crafting benches from any enabled pack, without mod-specific optional dependencies. It preserves original recipes and tier data; benches without a suitable craft recipe offer an explicit hand-in of one physical bench. Server exclusions and identity overrides are documented in [Other workbench support](https://jkswoods.github.io/mega-bench/hytale0.7/bench-support/). Special processing and custom plugin stations still need dedicated adapters. Alpha2 has not been uploaded to CurseForge.
+The Hytale 0.7 support branch discovers ordinary native crafting benches from any enabled pack, without mod-specific optional dependencies. It preserves original recipes and tier data; benches without a suitable craft recipe offer an explicit hand-in of one physical bench. Server exclusions and identity overrides are documented in [Other workbench support](https://jkswoods.github.io/mega-bench/hytale0.7/bench-support/). Special processing and custom plugin stations still need dedicated adapters. Check the selected download’s release notes for feature availability.
 
 ## Build from source
 
@@ -36,7 +36,7 @@ python3 tools/build.py \
 
 `MB_JAVA_HOME` and `MB_SERVER_JAR` may supply those paths; `JAVA_HOME` is a fallback for the JDK. Optional Emberworks and Foundry Floor are installed separately at runtime and are not required for building the mod.
 
-The build compiles the plugin, runs the progress and compatibility tests and writes `build/libs/MegaBench-0.1.0-alpha.2.jar`. With the pinned inputs its SHA256 is `0cbff299e64f957f71c87b3c61a28fabab3f80132aaf5bf0c87a10a6c76ae14b`. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
+The build compiles the plugin, runs the progress and compatibility tests and prints the mod JAR filename under `build/libs/`. Use the build or release output for that artifact’s checksum. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
 
 ## Documentation
 
@@ -52,3 +52,5 @@ Current source targets Hytale `>=0.7.4 <0.8.0` and uses the `hytale0.7` support 
 
 See [the contribution guide](CONTRIBUTING.md) for feature and bug-fix PR targets.
 Maintainers handle forward/back ports, and support-branch PRs require owner approval.
+
+The player guide follows the Hytale support line and is updated independently of mod releases. Select downloads by their game compatibility and read the selected file’s release notes for included changes and artifact checksums.
