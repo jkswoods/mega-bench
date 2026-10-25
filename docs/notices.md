@@ -4,7 +4,7 @@ Mega Bench's workshop model, pixel palette, item icon and guide branding are ori
 
 Hytale and Hypixel Studios belong to their respective owners. Mega Bench is an independent mod, with no implied official affiliation or endorsement. Native screenshots show Hytale running the mod; they do not grant rights to the game assets shown.
 
-Runtime sound families were generated through the connected ElevenLabs Sound Effects workflow. Sanitized generation/export attribution is included in the source repository. Generated recordings remain subject to the generating account's applicable terms. Mega Bench's original code, documentation and project assets use the [MIT License](https://github.com/jkswoods/mega-bench/blob/main/LICENSE). Hytale content depicted in screenshots and third-party components retain their own terms.
+Runtime sound families were generated through the connected ElevenLabs Sound Effects workflow. Sanitized generation/export attribution is included in the source repository. Generated recordings remain subject to the generating account's applicable terms. Mega Bench's original code, documentation and project assets use the [MIT License](https://github.com/jkswoods/mega-bench/blob/hytale0.7/LICENSE). Hytale content depicted in screenshots and third-party components retain their own terms.
 
 The guide uses MkDocs 1.6.1, the bundled Read the Docs theme and browser-side search. The retained documentation software notices follow.
 
