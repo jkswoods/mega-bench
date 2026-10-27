@@ -38,7 +38,7 @@ public final class MegaBenchPlugin extends JavaPlugin {
         catalogue=new Catalogue(compatibility);
         getLogger().atInfo().log("MB_CATALOGUE %s",catalogue.sources.values().stream().map(s->s.group()+":"+s.id()+":"+s.supported()+":"+s.recipes().size()).toList());
         for(var source:catalogue.sources.values())if(source.supported()&&source.bench()!=null&&source.bench().getCategories()!=null)getLogger().atInfo().log("MB_CATEGORIES %s %s",source.id(),Arrays.stream(source.bench().getCategories()).map(c->c.getId()).toList());
-        getLogger().atInfo().log("Mega Bench 0.1.0-alpha.2: discovers native crafting benches from loaded packs. Compatibility settings: %s",getDataDirectory().resolve("compatibility.json"));
+        getLogger().atInfo().log("Mega Bench: discovers native crafting benches from loaded packs. Compatibility settings: %s",getDataDirectory().resolve("compatibility.json"));
     }
     static Progress progress(Store<EntityStore>s){return s.getResource(progressType);}
     static boolean present(World w,NativeBridge.Position p){

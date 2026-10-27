@@ -9,6 +9,7 @@ One placeable workshop gives you a native crafting library for compatible Hytale
 - Workbench selection, unlocks and upgrades on the left.
 - A searchable recipe grid with original category tabs in the centre.
 - Ingredient counts, output, time and quantity controls on the right.
+- Creative mode offers all supported bench tiers without ingredient or personal unlock payments; returning to Survival keeps your paid progress.
 - Original native crafting, with batches of 1–16 and native cancellation/refunds.
 - Initial ordinary crafting adapters for stock benches, Emberworks Workbench and Foundry Floor.
 
@@ -36,7 +37,7 @@ python3 tools/build.py \
 
 `MB_JAVA_HOME` and `MB_SERVER_JAR` may supply those paths; `JAVA_HOME` is a fallback for the JDK. Optional Emberworks and Foundry Floor are installed separately at runtime and are not required for building the mod.
 
-The build compiles the plugin, runs the progress and compatibility tests and prints the mod JAR filename under `build/libs/`. Use the build or release output for that artifact’s checksum. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
+The build compiles the plugin, runs the progress, compatibility and Creative access tests and prints the mod JAR filename under `build/libs/`. Use the build or release output for that artifact’s checksum. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
 
 ## Documentation
 

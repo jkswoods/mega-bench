@@ -7,6 +7,7 @@ import json
 import os
 import shutil
 import subprocess
+import tempfile
 import zipfile
 from release_pipeline import config, filename
 
@@ -47,9 +48,14 @@ def main():
     tests = sorted((ROOT / 'src/test/java').rglob('*.java'))
     subprocess.run([javac, '--release', '25', '-cp', classpath, '-d', str(test_classes),
                     *map(str, tests)], check=True)
-    for test in ['BridgeStateTest', 'CompatibilityTest']:
-        subprocess.run([java, '-ea', '-cp', os.pathsep.join([str(test_classes), classpath]),
-                        'dev.megabench.' + test], check=True)
+    scratch = ROOT / '.cache/test-runs'
+    scratch.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix='build-', dir=scratch) as temporary:
+        environment = dict(os.environ, TMPDIR=temporary, TMP=temporary, TEMP=temporary)
+        for test in ['BridgeStateTest', 'CompatibilityTest', 'CraftingAccessTest']:
+            subprocess.run([java, '-Djava.io.tmpdir=' + temporary, '-ea', '-cp',
+                            os.pathsep.join([str(test_classes), classpath]),
+                            'dev.megabench.' + test], check=True, env=environment)
 
     entries = {}
     for folder in [classes, ROOT / 'src/main/resources']:

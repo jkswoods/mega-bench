@@ -38,6 +38,7 @@ final class NativeBridge {
     }
     static ItemContainer inventory(ComponentAccessor<EntityStore>s,Ref<EntityStore>r){return InventoryComponent.getCombined(s,r,InventoryComponent.HOTBAR_STORAGE_BACKPACK);}
     boolean idle(){return manager.getRemainingQueueSize()==0;}
+    boolean creative(){var p=store.getComponent(ref,Player.getComponentType());return p!=null&&CraftingAccess.creative(p.getGameMode());}
     void close(){
         if(ref.isValid()&&store.getComponent(ref,CraftingManager.getComponentType())==manager)manager.clearBench(ref,store);
         MegaBenchPlugin.sessions.remove(player.getUuid(),this);activeRecipe=null;
@@ -61,24 +62,27 @@ final class NativeBridge {
     void craft(Catalogue.Source source,CraftingRecipe recipe,int paidTier,int quantity){
         if(!valid())throw new IllegalArgumentException("Open a nearby Mega Bench");
         if(quantity<1||quantity>MAX_QUANTITY)throw new IllegalArgumentException("Choose between 1 and "+MAX_QUANTITY+" crafts");
-        if(!source.supported()||paidTier<1||paidTier>PrivateBenchContext.CAPACITY||Catalogue.requirement(recipe,source.id(),paidTier)==null)throw new IllegalArgumentException("Workbench or required tier is locked, or this recipe needs an unsupported augment");
+        boolean creative=creative();
+        if(!CraftingAccess.permits(creative,source.supported(),recipe,source.id(),paidTier))throw new IllegalArgumentException("Workbench or required tier is locked, or this recipe needs an unsupported augment");
         var pending=MegaBenchPlugin.progress(store).player(player.getUuid()).pending;
-        if(pending!=null&&pending.bench.equals(source.id()))throw new IllegalArgumentException("Wait for this workbench upgrade to finish");
+        if(!creative&&pending!=null&&pending.bench.equals(source.id()))throw new IllegalArgumentException("Wait for this workbench upgrade to finish");
         if(!idle())throw new IllegalArgumentException("Finish or cancel the current craft first");
         knowledge(store,ref,recipe);var inv=inventory(store,ref);
-        if(!inv.canRemoveMaterials(CraftingManager.getInputMaterials(recipe,quantity)))throw new IllegalArgumentException("Missing ingredients for the full batch");
+        if(!creative&&!inv.canRemoveMaterials(CraftingManager.getInputMaterials(recipe,quantity)))throw new IllegalArgumentException("Missing ingredients for the full batch");
         String beforeRoom=counts(inv);boolean roomAvailable=room(store,ref,recipe,quantity);String afterRoom=counts(inv);
         if(!beforeRoom.equals(afterRoom)){MegaBenchPlugin.instance.getLogger().atSevere().log("MB_CAPACITY_MUTATION before=%s after=%s",beforeRoom,afterRoom);throw new IllegalStateException("Output safety check unavailable; use the source workbench");}
         if(!roomAvailable)throw new IllegalArgumentException("Make room for every output before crafting");
         auditBefore=counts(inv);
         if(manager.hasBenchSet())manager.clearBench(ref,store);
-        var context=PrivateBenchContext.create(source.block(),paidTier);
+        // The exact native manager reads the current game mode when taking inputs.
+        // Creative needs no paid speed upgrade and retains the original recipe time.
+        var context=PrivateBenchContext.create(source.block(),creative?1:paidTier);
         manager.setBench(at.x(),at.y(),at.z(),context);activeRecipe=recipe;activeQuantity=quantity;
         var window=new BridgeWindow(at,context,physical,this);
         boolean accepted=ScopedValue.where(ADMISSION,this).call(()->manager.queueCraft(ref,store,window,0,recipe,quantity,inv,CraftingManager.InputRemovalType.NORMAL));
         if(!accepted){activeRecipe=null;manager.clearBench(ref,store);throw new IllegalArgumentException("Native crafting authority refused this recipe");}
         status="Craft queued";
-        MegaBenchPlugin.instance.getLogger().atInfo().log("MB_NATIVE_ADMIT player=%s source=%s paidTier=%s recipe=%s quantity=%s timePerCraft=%s capacity=%s exactComponents=true",player.getUuid(),source.id(),paidTier,recipe.getId(),quantity,PrivateBenchContext.seconds(source.block(),recipe,paidTier),physical.getTierLevel());
+        MegaBenchPlugin.instance.getLogger().atInfo().log("MB_NATIVE_ADMIT player=%s source=%s paidTier=%s recipe=%s quantity=%s timePerCraft=%s capacity=%s creative=%s exactComponents=true",player.getUuid(),source.id(),paidTier,recipe.getId(),quantity,PrivateBenchContext.seconds(source.block(),recipe,creative?1:paidTier),physical.getTierLevel(),creative);
         MegaBenchPlugin.cue(store,ref,"Craft");
     }
     static String types(ItemContainer inv){if(inv instanceof com.hypixel.hytale.server.core.inventory.container.CombinedItemContainer c){var names=new ArrayList<String>();for(int i=0;i<c.getContainersSize();i++)names.add(types(c.getContainer(i)));return inv.getClass().getName()+names;}return inv.getClass().getName();}
