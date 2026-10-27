@@ -4,7 +4,9 @@ title: "Unlocks and upgrades"
 
 # Unlocks and upgrades {#unlocks-and-upgrades}
 
-Every supported station has a personal capability in that world. Another player's purchase is intended to stay separate, and moving or replacing your Mega Bench keeps your own saved progress. Actual second-player testing is still pending.
+In Survival, every supported station has a personal capability in that world. Another player's purchase is intended to stay separate, and moving or replacing your Mega Bench keeps your own saved progress. Actual second-player testing is still pending.
+
+Creative mode temporarily makes all supported tiers available with no unlock or upgrade payment. Your saved Survival progress stays unchanged; see [Creative catalogue](library.md#creative-catalogue).
 
 ## Unlock a station {#unlock-a-station}
 

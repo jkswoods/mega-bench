@@ -4,7 +4,7 @@ title: "Recipes"
 
 # Recipes {#recipes}
 
-Mega Bench reads recipes from the loaded game and supported mods. It keeps their original inputs, outputs, duration, knowledge and tier requirements. Use the in-game detail panel for your installed version; mod updates can change these contracts.
+Mega Bench reads recipes from the loaded game and supported mods. In Survival, it keeps their original inputs, outputs, duration, knowledge and tier requirements. [Creative crafting](library.md#creative-catalogue) skips ingredient and personal bench payments while preserving native recipe knowledge, memory, time and output checks. Use the in-game detail panel for your installed version; mod updates can change these contracts.
 
 ## Make the access bench {#make-the-access-bench}
 
