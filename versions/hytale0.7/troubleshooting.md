@@ -8,6 +8,14 @@ title: "Troubleshooting"
 
 Check that exactly one Mega Bench JAR is installed, the world has MegaBench enabled and Hytale is version 0.7.4. The current build uses Java 25. A future game update needs a matching mod build.
 
+## The collision outline is offset from the bench {#the-collision-outline-is-offset-from-the-bench}
+
+Choose a compatible download whose release notes include the collision alignment fix. Back up your world and player data, then replace the older Mega Bench JAR while the game or server is stopped.
+
+![The corrected collision outline surrounds the visible Mega Bench.](/assets/hytale0.7/screenshots/collision-alignment.png)
+
+*Native Hytale 0.7.4: the Hitbox Tool shows the corrected outline around the bench. The outline is visible during inspection with the tool.*
+
 ## An older placed bench asks to be replaced {#an-older-placed-bench-asks-to-be-replaced}
 
 Back up the test world and player files, then normally break and replace that Mega Bench. The current development build does not automatically migrate earlier tier-one access blocks. Your player capabilities are saved separately.
