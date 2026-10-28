@@ -52,10 +52,10 @@ def main():
     scratch.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='build-', dir=scratch) as temporary:
         environment = dict(os.environ, TMPDIR=temporary, TMP=temporary, TEMP=temporary)
-        for test in ['BridgeStateTest', 'CompatibilityTest', 'CraftingAccessTest']:
+        for test in ['BridgeStateTest', 'CompatibilityTest', 'CraftingAccessTest', 'CollisionShapeTest']:
             subprocess.run([java, '-Djava.io.tmpdir=' + temporary, '-ea', '-cp',
                             os.pathsep.join([str(test_classes), classpath]),
-                            'dev.megabench.' + test], check=True, env=environment)
+                            'dev.megabench.' + test, str(ROOT / 'src/main/resources')], check=True, env=environment)
 
     entries = {}
     for folder in [classes, ROOT / 'src/main/resources']:

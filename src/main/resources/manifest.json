@@ -1,7 +1,7 @@
 {
   "Group": "MegaBench",
   "Name": "MegaBench",
-  "Version": "0.2.0",
+  "Version": "0.2.1-dev.1",
   "Description": "Automatic native crafting bench discovery, personal unlocks and original tiers in one workshop.",
   "ServerVersion": ">=0.7.4 <0.8.0",
   "Main": "dev.megabench.MegaBenchPlugin",
