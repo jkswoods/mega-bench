@@ -24,8 +24,9 @@ final class NativeBridge {
     final Store<EntityStore> store;final Ref<EntityStore> ref;final PlayerRef player;
     final Position at;final BenchBlock physical;final CraftingManager manager;
     final BooleanSupplier screenValid;
+    final CompanionExtension.Session companion;
     String auditBefore="";CraftingRecipe activeRecipe;int activeQuantity=1;Runnable uiRefresh=()->{};
-    String status="Select a workbench and recipe";
+    String status="Select a workbench and recipe";float progress;
     NativeBridge(Store<EntityStore>s,Ref<EntityStore>r,PlayerRef p,Position at,BooleanSupplier valid){
         store=s;ref=r;player=p;this.at=at;screenValid=valid;
         manager=s.getComponent(r,CraftingManager.getComponentType());
@@ -34,21 +35,29 @@ final class NativeBridge {
         if(blockRef==null)throw new IllegalStateException("Mega Bench block entity is not ready");
         physical=w.getChunkStore().getStore().getComponent(blockRef,BenchBlock.getComponentType());
         if(physical==null||physical.getClass()!=BenchBlock.class||physical.getTierLevel()!=PrivateBenchContext.CAPACITY)throw new IllegalStateException("Replace this older Mega Bench in a backed-up test world before using this build");
+        companion=CompanionExtension.open(new CompanionExtension.Context(s,r,p,at.x(),at.y(),at.z()));
         MegaBenchPlugin.sessions.put(p.getUuid(),this);MegaBenchPlugin.instance.getLogger().atInfo().log("MB_INVENTORY_TYPES %s",types(inventory(s,r)));
     }
     static ItemContainer inventory(ComponentAccessor<EntityStore>s,Ref<EntityStore>r){return InventoryComponent.getCombined(s,r,InventoryComponent.HOTBAR_STORAGE_BACKPACK);}
+    ItemContainer inputs(CraftingRecipe recipe,int quantity){return inputs(inventory(store,ref),companion,creative(),recipe,quantity);}
+    static ItemContainer inputs(ItemContainer own,CompanionExtension.Session companion,boolean creative,CraftingRecipe recipe,int quantity){
+        if(companion==null||creative)return own;
+        var extra=Objects.requireNonNull(companion.inputs(recipe,quantity),"Companion input source must not be null");
+        return new com.hypixel.hytale.server.core.inventory.container.CombinedItemContainer(own,extra);
+    }
     boolean idle(){return manager.getRemainingQueueSize()==0;}
     boolean creative(){var p=store.getComponent(ref,Player.getComponentType());return p!=null&&CraftingAccess.creative(p.getGameMode());}
     void close(){
         if(ref.isValid()&&store.getComponent(ref,CraftingManager.getComponentType())==manager)manager.clearBench(ref,store);
+        if(companion!=null){companion.finished();companion.close();}
         MegaBenchPlugin.sessions.remove(player.getUuid(),this);activeRecipe=null;
     }
     boolean valid(){return ref.isValid()&&screenValid.getAsBoolean()&&MegaBenchPlugin.present(store.getExternalData().getWorld(),at)&&player.getTransform().getPosition().distanceSquared(at.x()+.5,at.y()+.5,at.z()+.5)<=64;}
-    void pulse(){if(!valid()){close();return;}if(activeRecipe!=null&&idle()){MegaBenchPlugin.instance.getLogger().atInfo().log("MB_COMPLETE_AUDIT recipe=%s quantity=%s expected=%s before=%s after=%s",activeRecipe.getId(),activeQuantity,CraftingManager.getOutputItemStacks(activeRecipe,activeQuantity),auditBefore,counts(inventory(store,ref)));status="Craft complete";activeRecipe=null;}uiRefresh.run();}
+    void pulse(){if(!valid()){close();return;}if(activeRecipe!=null&&idle()){MegaBenchPlugin.instance.getLogger().atInfo().log("MB_COMPLETE_AUDIT recipe=%s quantity=%s expected=%s before=%s after=%s",activeRecipe.getId(),activeQuantity,CraftingManager.getOutputItemStacks(activeRecipe,activeQuantity),auditBefore,counts(inventory(store,ref)));status="Craft complete";progress=1;activeRecipe=null;if(companion!=null)companion.finished();}uiRefresh.run();}
     boolean cancelCraft(){
         var recipe=activeRecipe;
         if(!manager.cancelAllCrafting(ref,store))return false;
-        activeRecipe=null;status="Craft cancelled";
+        activeRecipe=null;if(companion!=null)companion.finished();status="Craft cancelled";progress=0;
         MegaBenchPlugin.instance.getLogger().atInfo().log("MB_CANCEL_AUDIT recipe=%s quantity=%s before=%s after=%s",recipe==null?"":recipe.getId(),activeQuantity,auditBefore,counts(inventory(store,ref)));
         return true;
     }
@@ -67,7 +76,7 @@ final class NativeBridge {
         var pending=MegaBenchPlugin.progress(store).player(player.getUuid()).pending;
         if(!creative&&pending!=null&&pending.bench.equals(source.id()))throw new IllegalArgumentException("Wait for this workbench upgrade to finish");
         if(!idle())throw new IllegalArgumentException("Finish or cancel the current craft first");
-        knowledge(store,ref,recipe);var inv=inventory(store,ref);
+        knowledge(store,ref,recipe);var inv=inputs(recipe,quantity);
         if(!creative&&!inv.canRemoveMaterials(CraftingManager.getInputMaterials(recipe,quantity)))throw new IllegalArgumentException("Missing ingredients for the full batch");
         String beforeRoom=counts(inv);boolean roomAvailable=room(store,ref,recipe,quantity);String afterRoom=counts(inv);
         if(!beforeRoom.equals(afterRoom)){MegaBenchPlugin.instance.getLogger().atSevere().log("MB_CAPACITY_MUTATION before=%s after=%s",beforeRoom,afterRoom);throw new IllegalStateException("Output safety check unavailable; use the source workbench");}
@@ -77,10 +86,18 @@ final class NativeBridge {
         // The exact native manager reads the current game mode when taking inputs.
         // Creative needs no paid speed upgrade and retains the original recipe time.
         var context=PrivateBenchContext.create(source.block(),creative?1:paidTier);
-        manager.setBench(at.x(),at.y(),at.z(),context);activeRecipe=recipe;activeQuantity=quantity;
-        var window=new BridgeWindow(at,context,physical,this);
-        boolean accepted=ScopedValue.where(ADMISSION,this).call(()->manager.queueCraft(ref,store,window,0,recipe,quantity,inv,CraftingManager.InputRemovalType.NORMAL));
-        if(!accepted){activeRecipe=null;manager.clearBench(ref,store);throw new IllegalArgumentException("Native crafting authority refused this recipe");}
+        progress=0;var window=new BridgeWindow(at,context,physical,this);
+        boolean accepted;
+        try{
+            if(companion!=null)companion.started();
+            manager.setBench(at.x(),at.y(),at.z(),context);activeRecipe=recipe;activeQuantity=quantity;
+            accepted=ScopedValue.where(ADMISSION,this).call(()->manager.queueCraft(ref,store,window,0,recipe,quantity,inv,CraftingManager.InputRemovalType.NORMAL));
+        }catch(RuntimeException ex){
+            activeRecipe=null;
+            try{manager.clearBench(ref,store);}finally{if(companion!=null)companion.finished();}
+            throw ex;
+        }
+        if(!accepted){activeRecipe=null;try{manager.clearBench(ref,store);}finally{if(companion!=null)companion.finished();}throw new IllegalArgumentException("Native crafting authority refused this recipe");}
         status="Craft queued";
         MegaBenchPlugin.instance.getLogger().atInfo().log("MB_NATIVE_ADMIT player=%s source=%s paidTier=%s recipe=%s quantity=%s timePerCraft=%s capacity=%s creative=%s exactComponents=true",player.getUuid(),source.id(),paidTier,recipe.getId(),quantity,PrivateBenchContext.seconds(source.block(),recipe,creative?1:paidTier),physical.getTierLevel(),creative);
         MegaBenchPlugin.cue(store,ref,"Craft");
@@ -107,7 +124,7 @@ final class NativeBridge {
         final NativeBridge bridge;
         BridgeWindow(Position at,com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType context,BenchBlock b,NativeBridge bridge){super(com.hypixel.hytale.protocol.packets.window.WindowType.BasicCrafting,at.x(),at.y(),at.z(),0,context,b);this.bridge=bridge;}
         @Override public void setBlockInteractionState(String state,World w){}
-        @Override public void updateCraftingJob(float progress){bridge.status="Crafting: "+Math.round(progress*100)+"%";}
+        @Override public void updateCraftingJob(float progress){bridge.progress=Math.clamp(progress,0f,1f);bridge.status="Crafting: "+Math.round(progress*100)+"%";}
         @Override public void updateQueueSize(int remaining){if(remaining==0)bridge.status="Craft complete";}
     }
 }

@@ -30,8 +30,10 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
     static final String LIMIT_NOTICE="Native crafting";
     final NativeBridge.Position at;final Catalogue catalogue;
     final Map<String,String> sourceRows=new HashMap<>();
+    final Map<String,String> craftBindings=new LinkedHashMap<>();
     NativeBridge bridge;boolean dismissed,renderedCreative;long version=1,nextLive;int offset,benchChoice,quantity=1;
-    String source="*",category="*",filter="All",search="",benchMode="Unlock",lastLive="";
+    String source="*",category="*",filter="All",search="",benchMode="Unlock",lastLive="";long bindingsVersion=-1;
+    String view="Crafting";
     String notice=LIMIT_NOTICE;
     List<Entry> visible=List.of();Entry selected;
     MegaBenchPage(PlayerRef p,NativeBridge.Position at,Catalogue c){super(p,CustomPageLifetime.CanDismiss,Action.CODEC);this.at=at;catalogue=c;}
@@ -41,9 +43,9 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
         if(bridge==null){bridge=new NativeBridge(s,r,playerRef,at,()->current(s,r));bridge.uiRefresh=this::refreshLive;}
         render(r,s,c,e);
     }
-    void bind(UIEventBuilder e,String selector,String action){e.addEventBinding(CustomUIEventBindingType.Activating,selector,EventData.of("Action",action).append("Version",Long.toString(version)),false);}
+    void bind(UIEventBuilder e,String selector,String action){craftBindings.put(selector,action);e.addEventBinding(CustomUIEventBindingType.Activating,selector,EventData.of("Action",action).append("Version",Long.toString(version)),false);}
     void render(Ref<EntityStore>r,Store<EntityStore>s,UICommandBuilder c,UIEventBuilder e){
-        var progress=MegaBenchPlugin.progress(s);boolean creative=bridge.creative();renderedCreative=creative;int row=0;sourceRows.clear();
+        var progress=MegaBenchPlugin.progress(s);boolean creative=bridge.creative();renderedCreative=creative;int row=0;craftBindings.clear();sourceRows.clear();
         c.clear("#Sources");c.clear("#Categories");c.clear("#Grid");
         c.append("#Sources","Pages/MegaBench/Source.ui");c.set("#Sources[0] #Name.Text","All workbenches");c.set("#Sources[0] #State.Text",creative?"Creative · all supported recipes":"Browse your unlocked recipes");c.set("#Sources[0] #Icon.ItemId","MB_MegaBench");c.set("#Sources[0] #Selected.Visible",source.equals("*"));bind(e,"#Sources[0]","source:*");row++;
         String lastGroup="";
@@ -83,7 +85,7 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
                 if(!search.isBlank()&&!(recipe.getId()+" "+Catalogue.output(recipe)+" "+NativePresentation.text(Catalogue.output(recipe),playerRef.getLanguage())+" "+b.id()).toLowerCase(Locale.ROOT).contains(search))continue;
                 if(!category.equals("*")&&Arrays.stream(recipe.getBenchRequirement()).noneMatch(req->b.id().equals(req.id)&&req.categories!=null&&Arrays.asList(req.categories).contains(category)))continue;
                 if(filter.equals("Unlocked")&&(tier==0||Catalogue.requirement(recipe,b.id(),tier)==null))continue;
-                if(filter.equals("Craftable")){try{if(tier==0||Catalogue.requirement(recipe,b.id(),tier)==null)continue;NativeBridge.knowledge(s,r,recipe);if(!creative&&!NativeBridge.inventory(s,r).canRemoveMaterials(CraftingManager.getInputMaterials(recipe,quantity)))continue;}catch(IllegalArgumentException ex){continue;}}
+                if(filter.equals("Craftable")){try{if(tier==0||Catalogue.requirement(recipe,b.id(),tier)==null)continue;NativeBridge.knowledge(s,r,recipe);if(!creative&&!bridge.inputs(recipe,quantity).canRemoveMaterials(CraftingManager.getInputMaterials(recipe,quantity)))continue;}catch(IllegalArgumentException ex){continue;}}
                 entries.add(new Entry(b,recipe));
             }
         }
@@ -95,15 +97,42 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
             if(out!=null)c.set(sel+" #Icon.ItemId",out.getItemId());
             c.set(sel+".TooltipText",NativePresentation.text(Catalogue.output(entry.recipe()),playerRef.getLanguage())+" · "+NativePresentation.label(entry.source().id())+"\n"+entry.recipe().getId());c.set(sel+" #Selected.Visible",selected!=null&&selected.equals(entry));c.set(sel+" #Amount.Text",out!=null&&out.getQuantity()>1?Integer.toString(out.getQuantity()):"");bind(e,sel,"entry:"+i);
         }
-        c.set("#Count.Text",entries.isEmpty()?"No recipes":entries.size()+" recipes · "+(offset/PAGE_SIZE+1)+" / "+((entries.size()+PAGE_SIZE-1)/PAGE_SIZE));live(r,s,c);
+        c.set("#Count.Text",entries.isEmpty()?"No recipes":entries.size()+" recipes · "+(offset/PAGE_SIZE+1)+" / "+((entries.size()+PAGE_SIZE-1)/PAGE_SIZE));frame(r,s,c,e,false);
+    }
+    void frame(Ref<EntityStore>r,Store<EntityStore>s,UICommandBuilder c,UIEventBuilder e){frame(r,s,c,e,true);}
+    void frame(Ref<EntityStore>r,Store<EntityStore>s,UICommandBuilder c,UIEventBuilder e,boolean rebind){
+        boolean companion=bridge.companion!=null,crafting=view.equals("Crafting");
+        if(!rebind){
+        var anchor=new Anchor();anchor.setWidth(Value.of(1611));anchor.setHeight(Value.of(companion?1054:1016));c.setObject("#Root.Anchor",anchor);
+        c.set("#RackFooter.Visible",companion);
+        var body=new Anchor();body.setHeight(Value.of(companion?884:954));c.setObject("#CraftingWorkspace.Anchor",body);
+        var centre=new Anchor();centre.setWidth(Value.of(715));centre.setHeight(Value.of(companion?884:954));c.setObject("#CraftCentre.Anchor",centre);
+        for(String panel:List.of("#WorkbenchPanel","#CraftDetails")){var size=new Anchor();size.setWidth(Value.of(410));size.setHeight(Value.of(companion?884:892));if(panel.equals("#WorkbenchPanel"))size.setRight(Value.of(38));c.setObject(panel+".Anchor",size);}
+        var recipes=new Anchor();recipes.setWidth(Value.of(715));recipes.setHeight(Value.of(companion?354:424));c.setObject("#RecipesPanel.Anchor",recipes);
+        }
+        // Native visibility changes reset scrolling groups. Move the unchanged Crafting layout off screen instead.
+        var workspace=new Anchor();workspace.setLeft(Value.of(crafting?0:-4000));workspace.setTop(Value.of(0));workspace.setWidth(Value.of(1611));workspace.setHeight(Value.of(companion?1054:1016));c.setObject("#WorkspaceFlow.Anchor",workspace);
+        c.set("#StorageWorkspace.Visible",!crafting);
+        // Rebind server revisions without clearing native controls: hidden workbench/recipe scroll and search survive.
+        if(rebind&&bindingsVersion!=version)for(var b:craftBindings.entrySet())e.addEventBinding(CustomUIEventBindingType.Activating,b.getKey(),EventData.of("Action",b.getValue()).append("Version",Long.toString(version)),false);
+        if(rebind&&bindingsVersion!=version)e.addEventBinding(CustomUIEventBindingType.Activating,"#SearchGo",EventData.of("Action","search").append("Version",Long.toString(version)).append("@Search","#Search.Value"),false);
+        bindingsVersion=version;
+        e.addEventBinding(CustomUIEventBindingType.Activating,"#OpenStorage",EventData.of("Action","view:Storage").append("Version",Long.toString(version)),false);
+        if(companion){
+            bridge.companion.render(view,version,c,e);
+            e.addEventBinding(CustomUIEventBindingType.Activating,"#BackToCrafting",EventData.of("Action","view:Crafting").append("Version",Long.toString(version)),false);
+            e.addEventBinding(CustomUIEventBindingType.Activating,"#StorageClose",EventData.of("Action","Close").append("Version",Long.toString(version)),false);
+        }else c.set("#CompanionOverlay.Visible",false);
+        e.addEventBinding(CustomUIEventBindingType.Activating,"#GlobalCancelCraft",EventData.of("Action","CancelCraft").append("Version",Long.toString(version)),false);
+        live(r,s,c);
     }
     void refreshLive(){
         if(bridge==null||!bridge.valid()||System.nanoTime()<nextLive)return;nextLive=System.nanoTime()+250_000_000L;var data=MegaBenchPlugin.progress(bridge.store).player(playerRef.getUuid());
         if(renderedCreative!=bridge.creative()){
             version++;offset=0;selected=null;var c=new UICommandBuilder();var e=new UIEventBuilder();render(bridge.ref,bridge.store,c,e);sendUpdate(c,e,false);return;
         }
-        String signature=NativePresentation.inventorySignature(bridge.store,bridge.ref)+bridge.status+data.tiers+(data.pending==null?"":data.pending.bench+Math.ceil(data.pending.remaining));
-        if(signature.equals(lastLive))return;lastLive=signature;var c=new UICommandBuilder();live(bridge.ref,bridge.store,c);sendUpdate(c,false);
+        String signature=NativePresentation.inventorySignature(bridge.store,bridge.ref)+(bridge.companion==null?"":bridge.companion.signature())+bridge.status+data.tiers+(data.pending==null?"":data.pending.bench+Math.ceil(data.pending.remaining));
+        if(signature.equals(lastLive))return;lastLive=signature;var c=new UICommandBuilder();var e=new UIEventBuilder();frame(bridge.ref,bridge.store,c,e);sendUpdate(c,e,false);
     }
     void benchControls(Ref<EntityStore>r,Store<EntityStore>s,UICommandBuilder c){
         var progress=MegaBenchPlugin.progress(s);var inv=NativeBridge.inventory(s,r);var src=source.equals("*")?null:catalogue.source(source);c.set("#BenchControls.Visible",src!=null);if(src==null)return;
@@ -138,7 +167,8 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
         c.set("#BenchTime.Text",time);c.set("#BenchAvailability.Text",availability);c.set("#BenchPay.Text",action);c.set("#BenchPay.Disabled",!enabled);
     }
     void live(Ref<EntityStore>r,Store<EntityStore>s,UICommandBuilder c){
-        boolean creative=bridge.creative();NativePresentation.inventory(c,s,r);var progress=MegaBenchPlugin.progress(s);var inv=NativeBridge.inventory(s,r);
+        boolean active=!bridge.idle();c.set("#ActivityBar.Visible",bridge.companion!=null&&(active||bridge.status.equals("Craft complete")||bridge.status.equals("Craft cancelled")));c.set("#GlobalCancelCraft.Visible",active);c.set("#GlobalProgress.Visible",active);var fill=new Anchor();fill.setLeft(Value.of(0));fill.setTop(Value.of(0));fill.setBottom(Value.of(0));fill.setWidth(Value.of(Math.round(520*bridge.progress)));c.setObject("#GlobalProgressFill.Anchor",fill);c.set("#InputSources.Visible",bridge.companion!=null);c.set("#GlobalCraftStatus.Text",bridge.status);c.set("#InputSources.Text",bridge.companion==null?"Player inventory":bridge.companion.inputLabel());
+        boolean creative=bridge.creative();NativePresentation.inventory(c,s,r);var progress=MegaBenchPlugin.progress(s);var inv=selected==null?NativeBridge.inventory(s,r):bridge.inputs(selected.recipe(),quantity);
         for(var row:sourceRows.entrySet()){var bench=catalogue.source(row.getKey());var pending=progress.player(playerRef.getUuid()).pending;int paid=progress.tier(playerRef.getUuid(),bench.id());c.set(row.getValue()+" #State.Text",!bench.supported()?"Unavailable · see details":creative?"Creative · All tiers":pending!=null&&pending.bench.equals(bench.id())?(pending.tier>1?"Upgrading…":"Unlocking…"):paid==0?"Locked":"Unlocked · Tier "+paid);}
         benchControls(r,s,c);c.set("#Selection.Text",selected==null?"Recipe":NativePresentation.text(Catalogue.output(selected.recipe()),playerRef.getLanguage()));c.set("#OutputIcon.Visible",selected!=null);c.set("#OutputCount.Text","");c.set("#Time.Text","");
         List<MaterialQuantity> costs=List.of();String detail="Choose a workbench on the left, then select a recipe.",availability="";boolean enabled=false;
@@ -196,7 +226,9 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
         try{
             String value=a.action.contains(":")?a.action.substring(a.action.indexOf(':')+1):"";
             if(a.action.equals("Close")){close();return;}
-            if(a.action.startsWith("source:")){source=value;category="*";selected=null;offset=0;benchChoice=0;benchMode=source.equals("*")||MegaBenchPlugin.progress(s).tier(playerRef.getUuid(),source)==0?"Unlock":"Upgrade";}
+            if(a.action.startsWith("view:")){if(!List.of("Crafting","Storage").contains(value)||bridge.companion==null)return;view=value;}
+            else if(a.action.startsWith("ext:")){if(bridge.companion==null||!view.equals("Storage"))return;bridge.companion.action(value,a.search);}
+            else if(a.action.startsWith("source:")){source=value;category="*";selected=null;offset=0;benchChoice=0;benchMode=source.equals("*")||MegaBenchPlugin.progress(s).tier(playerRef.getUuid(),source)==0?"Unlock":"Upgrade";}
             else if(a.action.startsWith("filter:")){if(!List.of("Craftable","Unlocked","All").contains(value))return;filter=value;offset=0;selected=null;}
             else if(a.action.startsWith("category:")){category=value;offset=0;selected=null;}
             else if(a.action.startsWith("benchMode:")){if(!List.of("Unlock","Upgrade").contains(value))return;benchMode=value;}
@@ -214,7 +246,7 @@ final class MegaBenchPage extends InteractiveCustomUIPage<MegaBenchPage.Action> 
             else if(a.action.equals("CancelCraft"))notice=bridge.cancelCraft()?LIMIT_NOTICE:"No active craft to cancel";
             else if(a.action.equals("Act")){if(selected==null)throw new IllegalArgumentException("Choose a recipe");bridge.craft(selected.source(),catalogue.recipe(selected.source(),selected.recipe().getId()),MegaBenchPlugin.progress(s).tier(playerRef.getUuid(),selected.source().id()),quantity);notice=LIMIT_NOTICE;}
         }catch(IllegalArgumentException|IllegalStateException ex){notice=ex.getMessage();}
-        version++;var c=new UICommandBuilder();var e=new UIEventBuilder();render(r,s,c,e);sendUpdate(c,e,false);
+        version++;var c=new UICommandBuilder();var e=new UIEventBuilder();if(a.action.startsWith("view:")||a.action.startsWith("ext:")||a.action.equals("CancelCraft"))frame(r,s,c,e);else render(r,s,c,e);sendUpdate(c,e,false);
     });}
     @Override public void onDismiss(Ref<EntityStore>r,Store<EntityStore>s){dismissed=true;if(bridge!=null)bridge.close();}
 }

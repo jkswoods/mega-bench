@@ -27,6 +27,8 @@ The Hytale 0.7 support branch discovers ordinary native crafting benches from an
 
 ## Build from source
 
+The companion API in this source is a private development candidate for the next minor version. Optional storage companions use [API 1](docs/COMPANION-API.md); Mega Bench also runs on its own. Read the selected release's notes before installing a companion.
+
 Use JDK 25 and the pinned official Hytale server listed in `config/target.json`. The build reads that separately installed server to compile; it does not package the server, game artwork or compatibility artwork. UI icons and native Common.ui styles are resolved from the player's installed game/mods at runtime.
 
 ```sh
@@ -37,7 +39,7 @@ python3 tools/build.py \
 
 `MB_JAVA_HOME` and `MB_SERVER_JAR` may supply those paths; `JAVA_HOME` is a fallback for the JDK. Optional Emberworks and Foundry Floor are installed separately at runtime and are not required for building the mod.
 
-The build compiles the plugin, runs the progress, compatibility and Creative access tests and prints the mod JAR filename under `build/libs/`. Use the build or release output for that artifact’s checksum. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
+The build compiles the plugin, runs progress, compatibility, Creative access, collision and companion API tests and prints the mod JAR filename under `build/libs/`. Use the build or release output for that artifact’s checksum. Checked-in native models, UI sources and original textures are editable; normal builds do not regenerate artwork or audio.
 
 ## Documentation
 

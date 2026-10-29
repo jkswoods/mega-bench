@@ -1,8 +1,12 @@
-## Collision alignment fix
+## Optional companion support
 
-- Corrects Mega Bench’s shifted collision box so it lines up with the visible bench, including its placement rotations.
-- Preserves existing recipes, Creative crafting and personal workbench progress.
+Private development candidate for Mega Bench 0.3.0. Publication and final native checks are pending.
 
-Thanks to the player who spotted and reported this good catch! The corrected shape was checked in native Hytale 0.7.4 and confirmed in a player playtest.
+- Adds API 1 for optional companion mods to supply permitted Survival crafting ingredients and a storage screen.
+- A connected companion can show storage status below Crafting and return to the selected recipe and workbench.
+- Creative retains native free crafting. Personal unlocks and upgrades still use the player's inventory, and native crafting retains control of recipe checks, outputs and cancellation/refunds.
+- Retains the player-approved 0.2.1 collision shape, existing saved progression, models and sounds.
 
-Requires Hytale >=0.7.4 <0.8.0 and Java 25. Back up complete world/player data before updating. With the game/server stopped, replace the older Mega Bench JAR in UserData/Mods with this file. See the [player guide](https://jkswoods.github.io/mega-bench/hytale0.7/) for installation and compatibility.
+Mega Bench works without a companion installed. Companion mods are separate downloads and must declare a compatible Mega Bench dependency. See [the API contract](docs/COMPANION-API.md).
+
+Requires Hytale >=0.7.4 <0.8.0 and Java 25. With the game/server stopped, replace the previous Mega Bench JAR and ensure that only one copy exists across the main Mods directory and the save's mods directory. Keep a complete world/player backup before updating.
