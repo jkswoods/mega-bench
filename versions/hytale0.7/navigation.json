@@ -35,6 +35,11 @@
     "icon": "hammer"
   },
   {
+    "title": "Storage companions",
+    "path": "/companions",
+    "icon": "database"
+  },
+  {
     "title": "Compatibility and multiplayer",
     "path": "/compatibility",
     "icon": "book-open"

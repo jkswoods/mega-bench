@@ -6,6 +6,14 @@ title: "Development status"
 
 Changes described here belong to the **Hytale 0.7 support line**. Download availability, numbered release history and the changes included in a particular file are recorded on [GitHub releases](https://github.com/jkswoods/mega-bench/releases).
 
+## Optional storage companions
+
+- API 1 lets a separately installed compatible companion add permitted Survival ingredient sources and a Storage view.
+- The connection footer leads from Crafting to Storage and back to the selected recipe/workbench.
+- Personal unlock and upgrade payments use player inventory. Creative retains native free crafting; outputs and cancellation/refunds remain native.
+
+Paired Hytale 0.7.5 checks covered storage-backed paid crafting and normal reload. Real second-player contention and human visual/listening review remain pending. See [Storage companions](companions.md) and the selected download's release notes.
+
 ## Automatic workbench discovery {#010-alpha2-test-build}
 
 - Discovers ordinary native crafting benches from any enabled pack, without name-prefix filters or optional mod dependencies.

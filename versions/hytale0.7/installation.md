@@ -6,7 +6,7 @@ title: "Installation"
 
 This guide follows the **Hytale 0.7 support line**. Published files can lag behind branch changes; read the chosen file’s release notes for the features it includes.
 
-Mega Bench is a standard **JAR mod** for **Hytale 0.7.4 / Java 25**. It does not use a custom server launcher.
+Mega Bench is a standard **JAR mod** for **Hytale `>=0.7.4 <0.8.0` / Java 25**. It does not use a custom server launcher.
 
 ## Get the matching build {#get-the-matching-build}
 
@@ -17,12 +17,16 @@ If no compatible file is available, build the [`hytale0.7` source branch](https:
 ## Add it to a test world {#add-it-to-a-test-world}
 
 1. Exit Hytale. Back up the complete world and its player files together with the JARs used by that world.
-2. Put one Mega Bench JAR in Hytale's `UserData/Mods` folder. Remove older Mega Bench JAR versions from that folder.
+2. Put one Mega Bench JAR in Hytale's `UserData/Mods` folder. Remove older Mega Bench JAR versions from that folder and check the save's own `mods` folder too. Keep only one Mega Bench base JAR across both locations.
 3. Open the world's **Mods** settings and enable **MegaBench**.
 4. Enable Emberworks and Foundry Floor in that world as well if you want to test their ordinary crafting adapters.
 5. Load the world and follow [Your first workshop](getting-started.md).
 
 For a dedicated server, use a separately backed-up development instance with the matching server/runtime. Actual second-client verification is still pending; this build is not recommended for an established multiplayer world.
+
+## Optional storage companions
+
+Mega Bench works by itself. To use a compatible API 1 storage companion, install that companion separately alongside a base file that meets its declared Mega Bench dependency. Read both files' release notes, enable both mods in the same world, and follow [Storage companions](companions.md). Older base downloads may not provide the required API.
 
 ## Updating an older development world {#updating-an-older-development-world}
 

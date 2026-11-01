@@ -6,7 +6,7 @@ title: "Compatibility and multiplayer"
 
 ## Supported target {#supported-target}
 
-This guide follows the **Hytale 0.7** support branch using **Java 25**. Native checks used Hytale 0.7.4. Read the selected download’s exact compatibility requirements and use a backed-up test world; other game patches are not established by these checks.
+This guide follows the **Hytale 0.7** support branch using **Java 25**. The manifest declares `>=0.7.4 <0.8.0`. Native base checks used Hytale 0.7.4; paired companion UI, paid crafting and normal reload were checked on Hytale 0.7.5. Read the selected download’s exact compatibility requirements and use a backed-up test world; other game patches are not established by these checks.
 
 ## Other workbenches {#other-workbenches}
 
@@ -24,7 +24,7 @@ The support branch provides [automatic discovery and server compatibility settin
 
 Current native checks covered paid stock Workbench tiers two and three, an Emberworks Supply Crate and Foundry Poured Factory Concrete. These examples do not establish every recipe or every version combination. The tested compatibility assets are recorded in the source build configuration. Native checks also covered native UI loading, all seven Emberworks tabs, Foundry Floor browsing, one exact 3-Iron Bear Trap craft and a normal save/reload with paid tiers intact.
 
-Mega Bench does not provide recursive crafting, a storage network, shared team progress or universal third-party compatibility. Processing-only products retain their source machine rules; the library does not turn them into ordinary free crafts.
+Mega Bench provides an optional [API 1 storage companion connection](companions.md). Storage itself is supplied by a separately installed compatible addon. The base does not provide recursive crafting, shared team progress or universal third-party compatibility. Processing-only products retain their source machine rules; the library does not turn them into ordinary free crafts.
 
 ## Personal progress {#personal-progress}
 
@@ -34,4 +34,4 @@ Use a dedicated test instance for any multiplayer trial. Report the game version
 
 ## Acceptance still open {#acceptance-still-open}
 
-Player judgement of the model, icon, UI and sound balance is pending, along with real second-client checks. Broad crash recovery, adversarial packets and a full survival route are not certified. Keep matching world/player/JAR backups.
+Player judgement of the model, icon, UI and sound balance is pending, along with real second-client checks. Companion ownership/contention and bridge changes during a craft still need actual second-player checks. Broad crash recovery, adversarial packets and a full survival route are not certified. Keep matching world/player/JAR backups.

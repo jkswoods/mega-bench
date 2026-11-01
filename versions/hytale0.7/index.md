@@ -38,4 +38,6 @@ Search your unlocked stations, switch their original category tabs, compare the 
 
 The initial adapters cover ordinary stock crafting benches, **Emberworks Workbench** and **Foundry Floor** when loaded. Emberworks keeps its seven category tabs. Processing and fuel stations, builder benches and special plugin interfaces remain separate stations.
 
+A separately installed compatible companion can add [permitted storage ingredients and a Storage view](companions.md). Creative crafting and personal workbench payments retain their existing rules.
+
 [Explore the library](library.md) · [Recipe costs](recipes.md) · [Compatibility and multiplayer](compatibility.md)
