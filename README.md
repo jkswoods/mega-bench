@@ -11,6 +11,7 @@ One placeable workshop gives you a native crafting library for compatible Hytale
 - Ingredient counts, output, time and quantity controls on the right.
 - Creative mode offers all supported bench tiers without ingredient or personal unlock payments; returning to Survival keeps your paid progress.
 - Original native crafting, with batches of 1–16 and native cancellation/refunds.
+- Optional API 1 companions can add permitted storage ingredients and a Storage view.
 - Initial ordinary crafting adapters for stock benches, Emberworks Workbench and Foundry Floor.
 
 ![Mega Bench placed in Hytale](docs/assets/screenshots/bench-three-quarter.png)
@@ -27,7 +28,7 @@ The Hytale 0.7 support branch discovers ordinary native crafting benches from an
 
 ## Build from source
 
-The companion API in this source is a private development candidate for the next minor version. Optional storage companions use [API 1](docs/COMPANION-API.md); Mega Bench also runs on its own. Read the selected release's notes before installing a companion.
+Optional storage companions use [API 1](docs/COMPANION-API.md); Mega Bench also runs on its own. Install a compatible companion separately and follow [the storage guide](https://jkswoods.github.io/mega-bench/hytale0.7/companions/). Read the selected release's notes before installing a companion.
 
 Use JDK 25 and the pinned official Hytale server listed in `config/target.json`. The build reads that separately installed server to compile; it does not package the server, game artwork or compatibility artwork. UI icons and native Common.ui styles are resolved from the player's installed game/mods at runtime.
 

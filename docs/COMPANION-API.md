@@ -1,8 +1,8 @@
 # Companion API 1
 
-This optional API first targets Mega Bench **0.3.0** on Hytale `>=0.7.4 <0.8.0`, with Java 25. It is currently a private development candidate. Mega Bench has no dependency on a companion and operates normally without one. Game compatibility, API compatibility and versions actually tested are separate claims.
+This optional API is introduced in Mega Bench **0.3.0 Alpha** on Hytale `>=0.7.4 <0.8.0`, with Java 25. Mega Bench has no dependency on a companion and operates normally without one. Game compatibility, API compatibility and versions actually tested are separate claims.
 
-A companion compiles against Mega Bench without bundling its classes. It declares a required runtime dependency on `MegaBench:MegaBench`. For the initial public companion line, use `>=0.3.0 <0.4.0` and register with API integer `1`. A private paired build must instead use the exact tested prerelease, currently `=0.3.0-disks.dev.1`. Do not publish a dependency on an unavailable private build. Breaking API changes require another API integer and a compatible mod version change; recheck compatibility before widening the companion's dependency range.
+A companion compiles against Mega Bench without bundling its classes. It declares a required runtime dependency on `MegaBench:MegaBench`. For the initial public companion line, use `>=0.3.0 <0.4.0` and register with API integer `1`. Private paired builds must use the exact tested prerelease dependency. Do not publish a dependency on an unavailable private build. Breaking API changes require another API integer and a compatible mod version change; recheck compatibility before widening the companion's dependency range.
 
 ## Registration and scope
 
